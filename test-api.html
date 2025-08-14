@@ -1,0 +1,114 @@
+// Test course creation API directly 
+async function testCourseAPI() {
+    const apiUrl = 'http://localhost:5000/api';
+    
+    try {
+        // First, let's try to register a test lecturer
+        console.log('1. Attempting to register a test lecturer...');
+        
+        const registerResponse = await fetch(`${apiUrl}/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: 'LEC001',
+                name: 'Test Lecturer',
+                email: 'lecturer@test.com',
+                password: 'testpass123',
+                role: 'lecturer',
+                phone: '1234567890',
+                address: 'Test Address'
+            })
+        });
+        
+        let registerResult = await registerResponse.json();
+        console.log('Register response:', registerResult);
+        
+        // If registration fails because user exists, try to login instead
+        let token;
+        if (!registerResponse.ok && registerResult.message?.includes('exists')) {
+            console.log('2. User exists, attempting login...');
+            
+            const loginResponse = await fetch(`${apiUrl}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    loginId: 'LEC001',
+                    password: 'testpass123'
+                })
+            });
+            
+            const loginResult = await loginResponse.json();
+            console.log('Login response:', loginResult);
+            
+            if (loginResponse.ok) {
+                token = loginResult.token;
+            }
+        } else if (registerResponse.ok) {
+            token = registerResult.token;
+        }
+        
+        if (!token) {
+            console.error('Failed to get authentication token');
+            return;
+        }
+        
+        console.log('3. Got authentication token, testing course creation...');
+        
+        // Now test course creation
+        const courseData = {
+            title: "Test API Course",
+            description: "This is a test course created via API",
+            code: "API101",
+            category: "Computer Science",
+            level: "Beginner",
+            credits: "3",
+            startDate: "2024-02-01",
+            endDate: "2024-05-31",
+            maxStudents: "25",
+            schedule: [{
+                day: "Monday",
+                startTime: "10:00",
+                endTime: "12:00",
+                type: "lecture"
+            }],
+            grading: {
+                assignments: 30,
+                midterm: 25,
+                final: 35,
+                presentations: 10
+            }
+        };
+        
+        const courseResponse = await fetch(`${apiUrl}/lecturer/courses`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(courseData)
+        });
+        
+        const courseResult = await courseResponse.json();
+        console.log('Course creation response status:', courseResponse.status);
+        console.log('Course creation response:', JSON.stringify(courseResult, null, 2));
+        
+        if (courseResponse.ok) {
+            console.log('✅ Course created successfully!');
+        } else {
+            console.log('❌ Course creation failed');
+        }
+        
+    } catch (error) {
+        console.error('Test error:', error);
+    }
+}
+
+// Run the test
+console.log('Starting course API test...');
+testCourseAPI().then(() => {
+    console.log('Test completed');
+});

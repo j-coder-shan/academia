@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f7fa;
+            padding: 40px;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            padding-left: 10%;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1a202c;
+            font-size: 28px;
+        }
+        .settings-panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+                .settings-tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .tab-btn {
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a5568;
+            transition: color 0.3s;
+        }
+        .tab-btn.active {
+            color: #3182ce;
+            border-bottom: 2px solid #3182ce;
+        }
+        .settings-content {
+            padding: 30px;
+        }
+        .setting-item {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .setting-item h3 {
+            color: #2d3748;
+            margin-bottom: 0;
+            font-size: 18px;
+        }
+        .setting-control {
+            display: flex;
+            align-items: center;
+        }
+        .setting-control label {
+            margin-right: 10px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #4299e1;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .settings-panel,
+        body.dark-mode .main-content,
+        body.dark-mode .header {
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .setting-item h3 {
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .tab-btn {
+            color: #a0aec0;
+        }
+        
+        body.dark-mode .tab-btn.active {
+            color: #63b3ed;
+            border-bottom-color: #63b3ed;
+        }
+        
+        @media (max-width: 768px) {
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .setting-control {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Student</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link active">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">Settings</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="header-btn" id="logoutBtn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="settings-container">
+                    <!-- General Settings -->
+                    <div class="settings-section">
+                        <h3>General Settings</h3>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label for="language">Language</label>
+                                <select id="language">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label for="timezone">Time Zone</label>
+                                <select id="timezone">
+                                    <option value="UTC">UTC</option>
+                                    <option value="EST">Eastern Time</option>
+                                    <option value="PST">Pacific Time</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label for="theme">Theme</label>
+                                <select id="theme">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="auto">Auto</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="settings-section">
+                        <h3>Notifications</h3>
+                        <div class="settings-grid">
+                            <div class="setting-item toggle-item">
+                                <label for="emailNotifications">Email Notifications</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="emailNotifications" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="assignmentSubmissions">Assignment Submissions</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="assignmentSubmissions" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="courseEnrollments">New Enrollments</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="courseEnrollments" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="systemUpdates">System Updates</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="systemUpdates" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Management Settings -->
+                    <div class="settings-section">
+                        <h3>Course Management</h3>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label for="defaultGradingScale">Default Grading Scale</label>
+                                <select id="defaultGradingScale">
+                                    <option value="standard">Standard (A-F)</option>
+                                    <option value="numeric">Numeric (0-100)</option>
+                                    <option value="pass-fail">Pass/Fail</option>
+                                </select>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="autoGradeCalculation">Auto Grade Calculation</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="autoGradeCalculation" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="lateSubmissionPenalty">Late Submission Penalty</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="lateSubmissionPenalty" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item">
+                                <label for="penaltyPercentage">Penalty Percentage per Day</label>
+                                <input type="number" id="penaltyPercentage" min="0" max="100" value="10">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Settings -->
+                    <div class="settings-section">
+                        <h3>Privacy</h3>
+                        <div class="settings-grid">
+                            <div class="setting-item toggle-item">
+                                <label for="profileVisibility">Profile Visibility to Students</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="profileVisibility" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="officeHoursVisibility">Office Hours Visibility</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="officeHoursVisibility" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="allowStudentMessages">Allow Student Messages</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="allowStudentMessages" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Settings -->
+                    <div class="settings-section">
+                        <h3>Advanced</h3>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label for="backupFrequency">Data Backup Frequency</label>
+                                <select id="backupFrequency">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="dataAnalytics">Anonymous Usage Analytics</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="dataAnalytics" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="setting-item toggle-item">
+                                <label for="betaFeatures">Enable Beta Features</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="betaFeatures">
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Management -->
+                    <div class="settings-section">
+                        <h3>Account Management</h3>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary" id="changePasswordBtn">Change Password</button>
+                            <button class="btn btn-warning" id="exportDataBtn">Export My Data</button>
+                            <button class="btn btn-secondary" id="downloadReportsBtn">Download Reports</button>
+                            <button class="btn btn-danger" id="deactivateAccountBtn">Deactivate Account</button>
+                        </div>
+                    </div>
+
+                    <!-- Save Settings -->
+                    <div class="settings-footer">
+                        <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+                        <button class="btn btn-secondary" id="resetSettingsBtn">Reset to Default</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Change Password Modal -->
+        <div id="changePasswordModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Change Password</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="updatePasswordBtn">Update Password</button>
+                    <button class="btn btn-secondary" id="cancelPasswordBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/student-settings.js"></script>
+</body>
+</html>

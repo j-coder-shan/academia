@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #2563eb;
+        }
+        .response {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+        .error {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        .success {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .form-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1>Presentation API Test</h1>
+    
+    <div class="test-container">
+        <h3>Authentication Test</h3>
+        <button class="test-button" onclick="testAuth()">Check Auth Token</button>
+        <div id="authResult"></div>
+    </div>
+    
+    <div class="test-container">
+        <h3>Course API Test</h3>
+        <button class="test-button" onclick="testCourseAPI()">Test Course API</button>
+        <div id="courseResult"></div>
+    </div>
+    
+    <div class="test-container">
+        <h3>Presentations API Test</h3>
+        <button class="test-button" onclick="testPresentationsAPI()">Get Presentations</button>
+        <button class="test-button" onclick="testCreatePresentation()">Test Create Presentation</button>
+        <div id="presentationsResult"></div>
+    </div>
+    
+    <div class="test-container">
+        <h3>Create Test Presentation</h3>
+        <div class="form-section">
+            <div class="form-group">
+                <label>Title:</label>
+                <input type="text" id="testTitle" value="Test Presentation">
+            </div>
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea id="testDescription" rows="3">This is a test presentation to verify the API.</textarea>
+            </div>
+            <div class="form-group">
+                <label>Course ID:</label>
+                <input type="text" id="testCourseId" placeholder="Enter course ID from course API test">
+            </div>
+            <div class="form-group">
+                <label>Type:</label>
+                <select id="testType">
+                    <option value="individual">Individual</option>
+                    <option value="group">Group</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Duration (minutes):</label>
+                <input type="number" id="testDuration" value="30">
+            </div>
+        </div>
+        <button class="test-button" onclick="createTestPresentation()">Create Test Presentation</button>
+        <div id="createResult"></div>
+    </div>
+    
+    <script>
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const responseDiv = document.createElement('div');
+            responseDiv.className = `response ${type}`;
+            responseDiv.innerHTML = `<pre>${message}</pre>`;
+            element.innerHTML = '';
+            element.appendChild(responseDiv);
+        }
+        
+        function testAuth() {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                log('authResult', `Auth token found: ${token.substring(0, 20)}...`, 'success');
+            } else {
+                log('authResult', 'No auth token found in localStorage', 'error');
+            }
+        }
+        
+        async function testCourseAPI() {
+            try {
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    log('courseResult', 'No auth token found', 'error');
+                    return;
+                }
+                
+                log('courseResult', 'Testing course API...', 'info');
+                
+                const response = await fetch('http://localhost:5000/api/courses', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const responseText = await response.text();
+                let responseData;
+                
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) {
+                    responseData = responseText;
+                }
+                
+                const result = {
+                    status: response.status,
+                    ok: response.ok,
+                    data: responseData
+                };
+                
+                log('courseResult', JSON.stringify(result, null, 2), response.ok ? 'success' : 'error');
+                
+                // Auto-fill course ID if courses found
+                if (response.ok && responseData.courses && responseData.courses.length > 0) {
+                    document.getElementById('testCourseId').value = responseData.courses[0]._id;
+                }
+                
+            } catch (error) {
+                log('courseResult', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testPresentationsAPI() {
+            try {
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    log('presentationsResult', 'No auth token found', 'error');
+                    return;
+                }
+                
+                log('presentationsResult', 'Testing presentations API...', 'info');
+                
+                const response = await fetch('http://localhost:5000/api/presentations', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const responseText = await response.text();
+                let responseData;
+                
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) {
+                    responseData = responseText;
+                }
+                
+                const result = {
+                    status: response.status,
+                    ok: response.ok,
+                    data: responseData
+                };
+                
+                log('presentationsResult', JSON.stringify(result, null, 2), response.ok ? 'success' : 'error');
+                
+            } catch (error) {
+                log('presentationsResult', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function createTestPresentation() {
+            try {
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    log('createResult', 'No auth token found', 'error');
+                    return;
+                }
+                
+                const courseId = document.getElementById('testCourseId').value;
+                if (!courseId) {
+                    log('createResult', 'Please enter a course ID first (run course API test)', 'error');
+                    return;
+                }
+                
+                const presentationData = {
+                    title: document.getElementById('testTitle').value,
+                    description: document.getElementById('testDescription').value,
+                    course: courseId,
+                    type: document.getElementById('testType').value,
+                    duration: parseInt(document.getElementById('testDuration').value),
+                    schedule: {
+                        assignedDate: new Date().toISOString().split('T')[0],
+                        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    },
+                    grading: {
+                        maxScore: 100,
+                        weightage: 20
+                    },
+                    notificationMode: 'enrolled',
+                    status: 'published'
+                };
+                
+                log('createResult', 'Creating presentation...', 'info');
+                
+                const response = await fetch('http://localhost:5000/api/presentations', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(presentationData)
+                });
+                
+                const responseText = await response.text();
+                let responseData;
+                
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) {
+                    responseData = responseText;
+                }
+                
+                const result = {
+                    status: response.status,
+                    ok: response.ok,
+                    data: responseData
+                };
+                
+                log('createResult', JSON.stringify(result, null, 2), response.ok ? 'success' : 'error');
+                
+            } catch (error) {
+                log('createResult', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testCreatePresentation() {
+            // This will create a basic test presentation
+            await createTestPresentation();
+        }
+    </script>
+</body>
+</html>

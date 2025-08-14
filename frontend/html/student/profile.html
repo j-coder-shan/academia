@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Student</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link active">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">Profile</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="header-btn" id="logoutBtn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Profile Content -->
+            <div class="profile-container">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-image-section">
+                        <div class="profile-image">
+                            <img id="profileImage" src="../../assets/default-avatar.jpg" alt="Profile Picture">
+                            <div class="image-overlay" id="imageOverlay" style="display: none;">
+                                <button class="btn btn-small">Change Photo</button>
+                                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h2 id="studentName">John Doe</h2>
+                        <p id="studentId">Student ID: STU2025001</p>
+                        <p id="studentProgram">Computer Science</p>
+                        <p id="enrollmentDate">Enrolled: January 2025</p>
+                    </div>
+
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalCredits">45</span>
+                            <span class="stat-label">Credits Earned</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="currentGPA">3.75</span>
+                            <span class="stat-label">Current GPA</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="completedCourses">8</span>
+                            <span class="stat-label">Courses Completed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="personal">Personal Information</button>
+                    <button class="tab-btn" data-tab="academic">Academic Records</button>
+                    <button class="tab-btn" data-tab="achievements">Achievements</button>
+                    <button class="tab-btn" data-tab="settings">Account Settings</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Personal Information Tab -->
+                    <div id="personal" class="tab-panel active">
+                        <div class="info-section">
+                            <h3>Contact Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Full Name</label>
+                                    <span id="fullName" class="info-value">John Doe</span>
+                                    <input type="text" id="fullNameEdit" class="info-edit" value="John Doe" style="display: none;">
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Email</label>
+                                    <span id="email" class="info-value">john.doe@academia.edu</span>
+                                    <input type="email" id="emailEdit" class="info-edit" value="john.doe@academia.edu" style="display: none;">
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Phone</label>
+                                    <span id="phone" class="info-value">+1 (555) 123-4567</span>
+                                    <input type="tel" id="phoneEdit" class="info-edit" value="+1 (555) 123-4567" style="display: none;">
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Date of Birth</label>
+                                    <span id="dob" class="info-value">January 15, 2000</span>
+                                    <input type="date" id="dobEdit" class="info-edit" value="2000-01-15" style="display: none;">
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Address</label>
+                                    <span id="address" class="info-value">123 Student Lane, Campus City, CC 12345</span>
+                                    <textarea id="addressEdit" class="info-edit" style="display: none;">123 Student Lane, Campus City, CC 12345</textarea>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Emergency Contact</label>
+                                    <span id="emergencyContact" class="info-value">Jane Doe - +1 (555) 987-6543</span>
+                                    <input type="text" id="emergencyContactEdit" class="info-edit" value="Jane Doe - +1 (555) 987-6543" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <h3>Academic Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Program</label>
+                                    <span id="program" class="info-value">Bachelor of Science in Computer Science</span>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Major</label>
+                                    <span id="major" class="info-value">Computer Science</span>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Minor</label>
+                                    <span id="minor" class="info-value">Mathematics</span>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Expected Graduation</label>
+                                    <span id="graduationDate" class="info-value">May 2027</span>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Academic Advisor</label>
+                                    <span id="advisor" class="info-value">Dr. Sarah Johnson</span>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <label>Student Status</label>
+                                    <span id="studentStatus" class="info-value">Full-time</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Academic Records Tab -->
+                    <div id="academic" class="tab-panel">
+                        <div class="academic-overview">
+                            <h3>Academic Progress</h3>
+                            <div class="progress-charts">
+                                <div class="chart-item">
+                                    <h4>Degree Progress</h4>
+                                    <div class="progress-circle">
+                                        <div class="circle-progress" data-progress="37">
+                                            <span>37%</span>
+                                        </div>
+                                    </div>
+                                    <p>45 of 120 credits completed</p>
+                                </div>
+                                
+                                <div class="chart-item">
+                                    <h4>GPA Trend</h4>
+                                    <div class="gpa-chart">
+                                        <canvas id="gpaChart" width="300" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="semester-records">
+                            <h3>Semester Records</h3>
+                            <div class="semester-tabs">
+                                <button class="semester-btn active" data-semester="fall2024">Fall 2024</button>
+                                <button class="semester-btn" data-semester="spring2024">Spring 2024</button>
+                                <button class="semester-btn" data-semester="fall2023">Fall 2023</button>
+                            </div>
+                            
+                            <div class="semester-content">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Credits</th>
+                                            <th>Grade</th>
+                                            <th>GPA Points</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="semesterGrades">
+                                        <tr>
+                                            <td>Computer Science I</td>
+                                            <td>3</td>
+                                            <td>A</td>
+                                            <td>4.0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Calculus I</td>
+                                            <td>4</td>
+                                            <td>B+</td>
+                                            <td>3.3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>English Composition</td>
+                                            <td>3</td>
+                                            <td>A-</td>
+                                            <td>3.7</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <div class="semester-summary">
+                                    <p><strong>Semester GPA:</strong> 3.67</p>
+                                    <p><strong>Credits Earned:</strong> 10</p>
+                                    <p><strong>Cumulative GPA:</strong> 3.75</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievements Tab -->
+                    <div id="achievements" class="tab-panel">
+                        <div class="achievements-section">
+                            <h3>Academic Achievements</h3>
+                            <div class="achievements-grid">
+                                <div class="achievement-item">
+                                    <div class="achievement-icon">🏆</div>
+                                    <h4>Dean's List</h4>
+                                    <p>Fall 2024</p>
+                                </div>
+                                
+                                <div class="achievement-item">
+                                    <div class="achievement-icon">⭐</div>
+                                    <h4>Outstanding Student</h4>
+                                    <p>Computer Science Department</p>
+                                </div>
+                                
+                                <div class="achievement-item">
+                                    <div class="achievement-icon">📚</div>
+                                    <h4>Perfect Attendance</h4>
+                                    <p>Spring 2024</p>
+                                </div>
+                                
+                                <div class="achievement-item">
+                                    <div class="achievement-icon">🎯</div>
+                                    <h4>High Achiever</h4>
+                                    <p>Mathematics Course</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="certificates-section">
+                            <h3>Certificates & Awards</h3>
+                            <div class="certificates-list">
+                                <div class="certificate-item">
+                                    <h4>Programming Fundamentals Certificate</h4>
+                                    <p>Issued: December 2024</p>
+                                    <button class="btn btn-secondary">Download</button>
+                                </div>
+                                
+                                <div class="certificate-item">
+                                    <h4>Academic Excellence Award</h4>
+                                    <p>Issued: November 2024</p>
+                                    <button class="btn btn-secondary">Download</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings Tab -->
+                    <div id="settings" class="tab-panel">
+                        <div class="settings-section">
+                            <h3>Account Security</h3>
+                            <div class="security-options">
+                                <div class="setting-item">
+                                    <label>Change Password</label>
+                                    <button class="btn btn-secondary" id="changePasswordBtn">Change Password</button>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Two-Factor Authentication</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="twoFactorToggle">
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Login Notifications</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="loginNotificationsToggle" checked>
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Privacy Preferences</h3>
+                            <div class="privacy-options">
+                                <div class="setting-item">
+                                    <label>Profile Visibility</label>
+                                    <select id="profileVisibility">
+                                        <option value="public">Public</option>
+                                        <option value="students">Students Only</option>
+                                        <option value="private">Private</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Email Notifications</label>
+                                    <div class="checkbox-group">
+                                        <label><input type="checkbox" checked> Assignment Updates</label>
+                                        <label><input type="checkbox" checked> Grade Notifications</label>
+                                        <label><input type="checkbox"> Course Announcements</label>
+                                        <label><input type="checkbox"> Academic Reminders</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Account Management</h3>
+                            <div class="account-actions">
+                                <button class="btn btn-secondary">Export Data</button>
+                                <button class="btn btn-secondary">Download Transcript</button>
+                                <button class="btn" style="background: #e74c3c;" id="deactivateAccountBtn">Deactivate Account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="passwordModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="modal-close" id="closePasswordModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="updatePasswordBtn">Update Password</button>
+                <button class="btn btn-secondary" id="cancelPasswordBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/student-profile.js"></script>
+    <script>
+        let isEditing = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProfile();
+            bindEvents();
+        });
+
+        function initializeProfile() {
+            loadProfileData();
+        }
+
+        function bindEvents() {
+            // Edit profile functionality
+            document.getElementById('editProfileBtn').addEventListener('click', enableEditing);
+            document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
+            document.getElementById('cancelEditBtn').addEventListener('click', cancelEditing);
+
+            // Tab functionality
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+
+            // Semester tabs
+            document.querySelectorAll('.semester-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchSemester(this.dataset.semester);
+                });
+            });
+
+            // Password change
+            document.getElementById('changePasswordBtn').addEventListener('click', () => showModal('passwordModal'));
+            document.getElementById('closePasswordModal').addEventListener('click', () => hideModal('passwordModal'));
+            document.getElementById('updatePasswordBtn').addEventListener('click', updatePassword);
+            document.getElementById('cancelPasswordBtn').addEventListener('click', () => hideModal('passwordModal'));
+
+            // Image upload
+            document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
+            document.querySelector('.image-overlay button').addEventListener('click', () => {
+                document.getElementById('imageUpload').click();
+            });
+        }
+
+        async function loadProfileData() {
+            try {
+                const response = await auth.apiRequest('/student/profile');
+                if (response && response.ok) {
+                    const profile = await response.json();
+                    populateProfileData(profile);
+                } else {
+                    // Use demo data
+                    const demoProfile = {
+                        name: 'John Doe',
+                        studentId: 'STU2025001',
+                        email: 'john.doe@academia.edu',
+                        phone: '+1 (555) 123-4567',
+                        address: '123 Student Lane, Campus City, CC 12345',
+                        dateOfBirth: '2000-01-15',
+                        emergencyContact: 'Jane Doe - +1 (555) 987-6543',
+                        program: 'Bachelor of Science in Computer Science',
+                        major: 'Computer Science',
+                        minor: 'Mathematics',
+                        enrollmentDate: '2023-08-15',
+                        expectedGraduation: 'May 2027',
+                        advisor: 'Dr. Sarah Johnson',
+                        status: 'Full-time',
+                        gpa: 3.75,
+                        creditsEarned: 45,
+                        completedCourses: 8
+                    };
+                    populateProfileData(demoProfile);
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        function populateProfileData(profile) {
+            document.getElementById('studentName').textContent = profile.name;
+            document.getElementById('studentId').textContent = `Student ID: ${profile.studentId}`;
+            document.getElementById('fullName').textContent = profile.name;
+            document.getElementById('email').textContent = profile.email;
+            document.getElementById('phone').textContent = profile.phone;
+            document.getElementById('address').textContent = profile.address;
+            document.getElementById('dob').textContent = new Date(profile.dateOfBirth).toLocaleDateString();
+            document.getElementById('emergencyContact').textContent = profile.emergencyContact;
+            document.getElementById('program').textContent = profile.program;
+            document.getElementById('major').textContent = profile.major;
+            document.getElementById('minor').textContent = profile.minor;
+            document.getElementById('graduationDate').textContent = profile.expectedGraduation;
+            document.getElementById('advisor').textContent = profile.advisor;
+            document.getElementById('studentStatus').textContent = profile.status;
+            document.getElementById('currentGPA').textContent = profile.gpa;
+            document.getElementById('totalCredits').textContent = profile.creditsEarned;
+            document.getElementById('completedCourses').textContent = profile.completedCourses;
+
+            // Populate edit fields
+            document.getElementById('fullNameEdit').value = profile.name;
+            document.getElementById('emailEdit').value = profile.email;
+            document.getElementById('phoneEdit').value = profile.phone;
+            document.getElementById('addressEdit').value = profile.address;
+            document.getElementById('dobEdit').value = profile.dateOfBirth;
+            document.getElementById('emergencyContactEdit').value = profile.emergencyContact;
+        }
+
+        function enableEditing() {
+            isEditing = true;
+            
+            // Toggle buttons
+            document.getElementById('editProfileBtn').style.display = 'none';
+            document.getElementById('saveProfileBtn').style.display = 'inline-block';
+            document.getElementById('cancelEditBtn').style.display = 'inline-block';
+            
+            // Show edit fields, hide display values
+            document.querySelectorAll('.info-value').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.info-edit').forEach(el => el.style.display = 'block');
+            
+            // Show image overlay
+            document.getElementById('imageOverlay').style.display = 'flex';
+        }
+
+        function cancelEditing() {
+            isEditing = false;
+            
+            // Toggle buttons
+            document.getElementById('editProfileBtn').style.display = 'inline-block';
+            document.getElementById('saveProfileBtn').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            
+            // Show display values, hide edit fields
+            document.querySelectorAll('.info-value').forEach(el => el.style.display = 'block');
+            document.querySelectorAll('.info-edit').forEach(el => el.style.display = 'none');
+            
+            // Hide image overlay
+            document.getElementById('imageOverlay').style.display = 'none';
+            
+            // Reset form values
+            loadProfileData();
+        }
+
+        async function saveProfile() {
+            try {
+                const profileData = {
+                    name: document.getElementById('fullNameEdit').value,
+                    email: document.getElementById('emailEdit').value,
+                    phone: document.getElementById('phoneEdit').value,
+                    address: document.getElementById('addressEdit').value,
+                    dateOfBirth: document.getElementById('dobEdit').value,
+                    emergencyContact: document.getElementById('emergencyContactEdit').value
+                };
+
+                const response = await auth.apiRequest('/student/profile', {
+                    method: 'PUT',
+                    body: JSON.stringify(profileData)
+                });
+
+                if (response && response.ok) {
+                    // Update display values
+                    document.getElementById('fullName').textContent = profileData.name;
+                    document.getElementById('email').textContent = profileData.email;
+                    document.getElementById('phone').textContent = profileData.phone;
+                    document.getElementById('address').textContent = profileData.address;
+                    document.getElementById('dob').textContent = new Date(profileData.dateOfBirth).toLocaleDateString();
+                    
+                    cancelEditing();
+                    showAlert('Profile updated successfully!', 'success');
+                } else {
+                    showAlert('Failed to update profile', 'error');
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showAlert('Error updating profile', 'error');
+            }
+        }
+
+        function switchTab(tabName) {
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Show corresponding panel
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function switchSemester(semester) {
+            // Update active semester tab
+            document.querySelectorAll('.semester-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-semester="${semester}"]`).classList.add('active');
+            
+            // Load semester data (would be from API in real app)
+            loadSemesterData(semester);
+        }
+
+        function loadSemesterData(semester) {
+            // Demo data for different semesters
+            const semesterData = {
+                fall2024: [
+                    { course: 'Advanced Programming', credits: 3, grade: 'A', points: 4.0 },
+                    { course: 'Data Structures', credits: 4, grade: 'B+', points: 3.3 },
+                    { course: 'Discrete Mathematics', credits: 3, grade: 'A-', points: 3.7 }
+                ],
+                spring2024: [
+                    { course: 'Computer Science I', credits: 3, grade: 'A', points: 4.0 },
+                    { course: 'Calculus I', credits: 4, grade: 'B+', points: 3.3 },
+                    { course: 'English Composition', credits: 3, grade: 'A-', points: 3.7 }
+                ]
+            };
+
+            const data = semesterData[semester] || semesterData.spring2024;
+            const tbody = document.getElementById('semesterGrades');
+            
+            tbody.innerHTML = data.map(course => `
+                <tr>
+                    <td>${course.course}</td>
+                    <td>${course.credits}</td>
+                    <td>${course.grade}</td>
+                    <td>${course.points}</td>
+                </tr>
+            `).join('');
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profileImage').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function updatePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+
+            try {
+                const response = await auth.apiRequest('/auth/change-password', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        currentPassword,
+                        newPassword
+                    })
+                });
+
+                if (response && response.ok) {
+                    hideModal('passwordModal');
+                    showAlert('Password updated successfully!', 'success');
+                    document.getElementById('passwordForm').reset();
+                } else {
+                    showAlert('Failed to update password', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating password:', error);
+                showAlert('Error updating password', 'error');
+            }
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showAlert(message, type = 'info') {
+            // Remove existing alerts
+            const existingAlert = document.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create new alert
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+
+            // Insert alert at the top of main content
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.insertBefore(alert, mainContent.firstChild);
+            }
+
+            // Auto-remove alert after 3 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 3000);
+        }
+
+        // Custom styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .profile-container {
+            }
+
+            .profile-header {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 30px;
+                display: flex;
+                gap: 30px;
+                align-items: center;
+            }
+
+            .profile-image-section {
+                position: relative;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                overflow: hidden;
+                position: relative;
+                border: 4px solid #3498db;
+            }
+
+            .profile-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .image-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+            }
+
+            .profile-info {
+                flex: 1;
+            }
+
+            .profile-info h2 {
+                margin-bottom: 10px;
+                color: #2c3e50;
+            }
+
+            .profile-info p {
+                margin: 5px 0;
+                color: #666;
+            }
+
+            .profile-stats {
+                display: flex;
+                gap: 30px;
+            }
+
+            .stat-item {
+                text-align: center;
+            }
+
+            .stat-number {
+                display: block;
+                font-size: 24px;
+                font-weight: bold;
+                color: #3498db;
+            }
+
+            .stat-label {
+                font-size: 14px;
+                color: #666;
+            }
+
+            .profile-tabs {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 30px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .tab-btn {
+                padding: 15px 20px;
+                border: none;
+                background: none;
+                cursor: pointer;
+                border-bottom: 3px solid transparent;
+                transition: all 0.3s;
+            }
+
+            .tab-btn.active {
+                border-bottom-color: #3498db;
+                color: #3498db;
+            }
+
+            .tab-panel {
+                display: none;
+            }
+
+            .tab-panel.active {
+                display: block;
+            }
+
+            .info-section {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 30px;
+            }
+
+            .info-section h3 {
+                margin-bottom: 20px;
+                color: #2c3e50;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+            }
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+            }
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .info-item label {
+                font-weight: bold;
+                color: #555;
+                font-size: 14px;
+            }
+
+            .info-value {
+                padding: 10px 0;
+                color: #333;
+            }
+
+            .info-edit {
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+
+            .semester-tabs {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .semester-btn {
+                padding: 10px 20px;
+                border: 1px solid #ddd;
+                background: white;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+
+            .semester-btn.active {
+                background: #3498db;
+                color: white;
+                border-color: #3498db;
+            }
+
+            .semester-summary {
+                margin-top: 20px;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 8px;
+            }
+
+            .achievements-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .achievement-item {
+                text-align: center;
+                padding: 30px;
+                border: 2px solid #f39c12;
+                border-radius: 10px;
+                background: #fff9e6;
+            }
+
+            .achievement-icon {
+                font-size: 48px;
+                margin-bottom: 15px;
+            }
+
+            .certificates-list {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .certificate-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background: white;
+            }
+
+            .settings-section {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 30px;
+            }
+
+            .setting-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 0;
+                border-bottom: 1px solid #eee;
+            }
+
+            .setting-item:last-child {
+                border-bottom: none;
+            }
+
+            .toggle-switch {
+                position: relative;
+                width: 60px;
+                height: 30px;
+            }
+
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                transition: .4s;
+                border-radius: 30px;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 22px;
+                width: 22px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+
+            input:checked + .slider {
+                background-color: #3498db;
+            }
+
+            input:checked + .slider:before {
+                transform: translateX(30px);
+            }
+
+            .checkbox-group {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .checkbox-group label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: normal;
+            }
+
+            .account-actions {
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .modal.hidden {
+                display: none;
+            }
+
+            .modal-content {
+                background: white;
+                border-radius: 8px;
+                max-width: 500px;
+                width: 90%;
+                max-height: 90%;
+                overflow-y: auto;
+            }
+
+            .modal-header {
+                padding: 20px;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .modal-close {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #666;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .modal-footer {
+                padding: 20px;
+                border-top: 1px solid #eee;
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+            }
+
+            @media (max-width: 768px) {
+                .profile-header {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .profile-stats {
+                    justify-content: center;
+                }
+
+                .info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .achievements-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

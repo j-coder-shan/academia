@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern Search and Filter Styles */
+        .modern-filters-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .search-filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Modern Search Bar */
+        .modern-search-bar {
+            flex: 1;
+        }
+
+        .search-input-container {
+            position: relative;
+            max-width: 500px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 50px 14px 50px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .search-input:focus + .search-icon {
+            color: #667eea;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .clear-search:hover {
+            background: #f8f9fa;
+            color: #dc3545;
+        }
+
+        .search-input:not(:placeholder-shown) + .search-icon + .clear-search {
+            opacity: 1;
+        }
+
+        /* Filter Controls */
+        .filter-controls-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 60px;
+            font-size: 14px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6c757d;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .filter-tab:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+            color: #667eea;
+        }
+
+        .filter-tab.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .filter-tab i {
+            font-size: 12px;
+        }
+
+        /* Advanced Filters */
+        .advanced-filters {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-left: auto;
+        }
+
+        .filter-dropdown {
+            position: relative;
+        }
+
+        .modern-select {
+            padding: 10px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .modern-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* View Options */
+        .view-options {
+            display: flex;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .view-btn {
+            padding: 10px 14px;
+            border: none;
+            background: white;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .view-btn:hover {
+            background: #f8f9fa;
+            color: #667eea;
+        }
+
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-btn + .view-btn {
+            border-left: 1px solid #e9ecef;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .results-info {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Course Creation Form Styles */
+        .course-creation-section {
+            background: white;
+            border-radius: 15px;
+            padding: 32px;
+            margin-top: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .form-header h3 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .form-header h3 i {
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        .form-header p {
+            color: #6c757d;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .modern-course-form {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #e9ecef;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .section-header i {
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .section-header h4 {
+            color: #2c3e50;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            transition: all 0.3s ease;
+            color: #2c3e50;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Schedule Styles */
+        .schedule-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        .day-schedule {
+            display: grid;
+            grid-template-columns: 120px 1fr 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .day-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+
+        .day-label input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .time-input {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .time-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Grading Schema Styles */
+        .grading-schema {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .schema-header p {
+            color: #6c757d;
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .grading-components {
+            margin-bottom: 24px;
+        }
+
+        .component-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .component-name {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .component-name label {
+            font-weight: 500;
+            color: #2c3e50;
+            min-width: 120px;
+            margin: 0;
+        }
+
+        .weight-input {
+            width: 80px;
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            background: white;
+        }
+
+        .weight-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .weight-symbol {
+            color: #667eea;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .total-weight {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .weight-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #28a745;
+            position: relative;
+        }
+
+        .weight-indicator.warning {
+            background: #ffc107;
+        }
+
+        .weight-indicator.error {
+            background: #dc3545;
+        }
+
+        .grade-scale h5 {
+            color: #2c3e50;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .scale-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .scale-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+
+        .scale-item label {
+            font-weight: 600;
+            color: #667eea;
+            min-width: 20px;
+            margin: 0;
+        }
+
+        .scale-input {
+            width: 60px;
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding-top: 32px;
+            border-top: 2px solid #f8f9fa;
+            margin-top: 32px;
+        }
+
+        .form-actions .btn {
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        /* Courses Grid Styles */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+            line-height: 1.3;
+            flex: 1;
+            margin-right: 12px;
+        }
+
+        .course-status {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .course-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .course-status.draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .course-status.completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .course-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .course-code {
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .course-students {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .course-students i {
+            color: #667eea;
+        }
+
+        .course-description {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .course-actions .btn {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .course-actions .btn-sm {
+            font-size: 13px;
+            padding: 8px 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Empty State and Messages */
+        .no-courses-message, .error-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+            grid-column: 1 / -1;
+        }
+
+        .no-courses-message i, .error-message i {
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .no-courses-message h3, .error-message h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .no-courses-message p, .error-message p {
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+
+        /* Loading, Error, and Draft States */
+        .loading-state,
+        .error-state,
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 12px;
+            border: 2px dashed #e9ecef;
+        }
+
+        .loading-state i {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        .error-state i {
+            font-size: 48px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .loading-state h3,
+        .error-state h3,
+        .empty-state h3 {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .loading-state p,
+        .error-state p,
+        .empty-state p {
+            color: #6c757d;
+            font-size: 16px;
+            margin-bottom: 24px;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Draft course styles */
+        .course-card.draft {
+            opacity: 0.8;
+            border-left: 4px solid #ffc107;
+        }
+
+        .course-card.draft .course-status.draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .course-card.draft::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: #ffc107;
+            border-radius: 50%;
+        }
+        /* Enhanced User Info Styling */
+.user-info {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+    margin: 10px 0 5px 0;
+    text-transform: capitalize;
+}
+
+.user-role {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 1.5rem;
+    color: white;
+}
+
+        /* Enhanced notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 18px 22px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            min-width: 320px;
+            max-width: 450px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            animation: slideInRight 0.4s ease-out;
+            backdrop-filter: blur(8px);
+            line-height: 1.5;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .notification-success { 
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border-left: 4px solid #1e7e34;
+        }
+        
+        .notification-error { 
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
+            border-left: 4px solid #bd2130;
+        }
+        
+        .notification-info { 
+            background: linear-gradient(135deg, #17a2b8, #3498db);
+            border-left: 4px solid #117a8b;
+        }
+
+        .notification span {
+            flex: 1;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .notification i:first-child {
+            font-size: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .notification-close {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -2px;
+        }
+
+        .notification-close:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        @keyframes slideInRight {
+            from { 
+                transform: translateX(100%); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateX(0); 
+                opacity: 1; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Lecturer</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link active">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="manage-courses.html" class="nav-link">
+                        <i class="fas fa-cogs"></i>
+                        <span>Manage Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="evaluation.html" class="nav-link">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Evaluations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">My Courses</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="header-btn" id="logoutBtn2" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Course Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Total Courses</div>
+                            <div class="stat-card-icon enrolled">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="totalCourses">0</div>
+                        <div class="stat-card-label">All courses</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Active Courses</div>
+                            <div class="stat-card-icon pending">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="activeCourses">0</div>
+                        <div class="stat-card-label">Currently teaching</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Total Students</div>
+                            <div class="stat-card-icon completed">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="totalStudents">0</div>
+                        <div class="stat-card-label">Enrolled students</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Assignments</div>
+                            <div class="stat-card-icon grade">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="totalAssignments">0</div>
+                        <div class="stat-card-label">Created assignments</div>
+                    </div>
+                </div>
+
+                <!-- Modern Filters and Search Section -->
+                <div class="modern-filters-section">
+                    <!-- Search and Filter Controls -->
+                    <div class="search-filter-container">
+                        <!-- Advanced Search Bar -->
+                        <div class="modern-search-bar">
+                            <div class="search-input-container">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="searchInput" placeholder="Search courses by name, code, or description..." class="search-input">
+                                <button class="clear-search" id="clearSearch" title="Clear search">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filter Controls -->
+                        <div class="filter-controls-container">
+                            <!-- Status Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">Status:</label>
+                                <div class="filter-tabs">
+                                    <button class="filter-tab active" data-filter="all">
+                                        <i class="fas fa-list"></i>
+                                        All
+                                    </button>
+                                    <button class="filter-tab" data-filter="active">
+                                        <i class="fas fa-play-circle"></i>
+                                        Active
+                                    </button>
+                                    <button class="filter-tab" data-filter="draft">
+                                        <i class="fas fa-edit"></i>
+                                        Draft
+                                    </button>
+                                    <button class="filter-tab" data-filter="completed">
+                                        <i class="fas fa-check-circle"></i>
+                                        Completed
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Advanced Filters -->
+                            <div class="advanced-filters">
+                                <!-- Category Filter -->
+                                <div class="filter-dropdown">
+                                    <select id="categoryFilter" class="modern-select">
+                                        <option value="">All Categories</option>
+                                        <option value="computer-science">Computer Science</option>
+                                        <option value="mathematics">Mathematics</option>
+                                        <option value="science">Science</option>
+                                        <option value="engineering">Engineering</option>
+                                        <option value="business">Business</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <!-- Sort Options -->
+                                <div class="filter-dropdown">
+                                    <select id="sortFilter" class="modern-select">
+                                        <option value="name-asc">Name (A-Z)</option>
+                                        <option value="name-desc">Name (Z-A)</option>
+                                        <option value="date-newest">Newest First</option>
+                                        <option value="date-oldest">Oldest First</option>
+                                        <option value="students-most">Most Students</option>
+                                        <option value="students-least">Least Students</option>
+                                    </select>
+                                </div>
+
+                                <!-- View Options -->
+                                <div class="view-options">
+                                    <button class="view-btn active" data-view="grid" title="Grid View">
+                                        <i class="fas fa-th"></i>
+                                    </button>
+                                    <button class="view-btn" data-view="list" title="List View">
+                                        <i class="fas fa-list"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Bar -->
+                    <div class="action-bar">
+                        <div class="results-info">
+                            <span id="resultsCount">0 courses found</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" id="exportCoursesBtn">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                            <button class="btn btn-primary" id="createCourseBtn">
+                                <i class="fas fa-plus"></i>
+                                Create Course
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courses Grid -->
+                <div class="courses-grid" id="coursesGrid">
+                    <!-- Courses will be loaded here -->
+                </div>
+
+                <!-- Course Creation Form -->
+                <div class="course-creation-section" id="courseCreationSection" style="display: none;">
+                    <div class="form-header">
+                        <h3><i class="fas fa-plus-circle"></i> Create New Course</h3>
+                        <p>Fill in the details below to create a new course for your students</p>
+                    </div>
+
+                    <form id="createCourseForm" class="modern-course-form">
+                        <!-- Basic Information Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-info-circle"></i>
+                                <h4>Basic Information</h4>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="courseCode">Course Code <span class="required">*</span></label>
+                                    <input type="text" id="courseCode" name="courseCode" required 
+                                           placeholder="e.g., CS 101" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseName">Course Name <span class="required">*</span></label>
+                                    <input type="text" id="courseName" name="courseName" required 
+                                           placeholder="e.g., Introduction to Computer Science" class="form-input">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="courseDescription">Description</label>
+                                <textarea id="courseDescription" name="courseDescription" rows="4" 
+                                          placeholder="Enter course description and objectives..." class="form-textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Course Details Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-cog"></i>
+                                <h4>Course Details</h4>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="credits">Credits <span class="required">*</span></label>
+                                    <select id="credits" name="credits" required class="form-select">
+                                        <option value="">Select Credits</option>
+                                        <option value="1">1 Credit</option>
+                                        <option value="2">2 Credits</option>
+                                        <option value="3">3 Credits</option>
+                                        <option value="4">4 Credits</option>
+                                        <option value="5">5 Credits</option>
+                                        <option value="6">6 Credits</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="semester">Semester <span class="required">*</span></label>
+                                    <select id="semester" name="semester" required class="form-select">
+                                        <option value="">Select Semester</option>
+                                        <option value="fall-2024">Fall 2024</option>
+                                        <option value="spring-2025">Spring 2025</option>
+                                        <option value="summer-2025">Summer 2025</option>
+                                        <option value="fall-2025">Fall 2025</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="maxStudents">Max Students</label>
+                                    <input type="number" id="maxStudents" name="maxStudents" 
+                                           placeholder="30" min="1" max="200" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="academicYear">Academic Year</label>
+                                    <input type="text" id="academicYear" name="academicYear" 
+                                           placeholder="2024-2025" class="form-input">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="category">Category</label>
+                                    <select id="category" name="category" class="form-select">
+                                        <option value="">Select Category</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Physics">Physics</option>
+                                        <option value="Chemistry">Chemistry</option>
+                                        <option value="Biology">Biology</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Arts">Arts</option>
+                                        <option value="Literature">Literature</option>
+                                        <option value="History">History</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="difficulty">Difficulty Level</label>
+                                    <select id="difficulty" name="difficulty" class="form-select">
+                                        <option value="">Select Level</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Schedule Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-calendar"></i>
+                                <h4>Schedule</h4>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" id="startDate" name="startDate" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" id="endDate" name="endDate" class="form-input">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Lecture Schedule</label>
+                                <div class="schedule-grid">
+                                    <div class="day-schedule">
+                                        <label class="day-label">
+                                            <input type="checkbox" name="days" value="monday"> Monday
+                                        </label>
+                                        <input type="time" name="monday_start" class="time-input" placeholder="Start">
+                                        <input type="time" name="monday_end" class="time-input" placeholder="End">
+                                    </div>
+                                    <div class="day-schedule">
+                                        <label class="day-label">
+                                            <input type="checkbox" name="days" value="tuesday"> Tuesday
+                                        </label>
+                                        <input type="time" name="tuesday_start" class="time-input" placeholder="Start">
+                                        <input type="time" name="tuesday_end" class="time-input" placeholder="End">
+                                    </div>
+                                    <div class="day-schedule">
+                                        <label class="day-label">
+                                            <input type="checkbox" name="days" value="wednesday"> Wednesday
+                                        </label>
+                                        <input type="time" name="wednesday_start" class="time-input" placeholder="Start">
+                                        <input type="time" name="wednesday_end" class="time-input" placeholder="End">
+                                    </div>
+                                    <div class="day-schedule">
+                                        <label class="day-label">
+                                            <input type="checkbox" name="days" value="thursday"> Thursday
+                                        </label>
+                                        <input type="time" name="thursday_start" class="time-input" placeholder="Start">
+                                        <input type="time" name="thursday_end" class="time-input" placeholder="End">
+                                    </div>
+                                    <div class="day-schedule">
+                                        <label class="day-label">
+                                            <input type="checkbox" name="days" value="friday"> Friday
+                                        </label>
+                                        <input type="time" name="friday_start" class="time-input" placeholder="Start">
+                                        <input type="time" name="friday_end" class="time-input" placeholder="End">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grading Schema Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-chart-bar"></i>
+                                <h4>Grading Schema</h4>
+                            </div>
+                            
+                            <div class="grading-schema">
+                                <div class="schema-header">
+                                    <p>Define how student performance will be evaluated in this course</p>
+                                </div>
+
+                                <div class="grading-components">
+                                    <div class="component-row">
+                                        <div class="component-name">
+                                            <label>Assignments</label>
+                                            <input type="number" name="assignments_weight" placeholder="30" min="0" max="100" class="weight-input" value="30">
+                                            <span class="weight-symbol">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="component-row">
+                                        <div class="component-name">
+                                            <label>Midterm Exam</label>
+                                            <input type="number" name="midterm_weight" placeholder="25" min="0" max="100" class="weight-input" value="25">
+                                            <span class="weight-symbol">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="component-row">
+                                        <div class="component-name">
+                                            <label>Final Exam</label>
+                                            <input type="number" name="final_weight" placeholder="35" min="0" max="100" class="weight-input" value="35">
+                                            <span class="weight-symbol">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="component-row">
+                                        <div class="component-name">
+                                            <label>Participation</label>
+                                            <input type="number" name="participation_weight" placeholder="10" min="0" max="100" class="weight-input" value="10">
+                                            <span class="weight-symbol">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="total-weight">
+                                    <span>Total Weight: <span id="totalWeight">100</span>%</span>
+                                    <div class="weight-indicator" id="weightIndicator"></div>
+                                </div>
+
+                                <div class="grade-scale">
+                                    <h5>Grade Scale</h5>
+                                    <div class="scale-grid">
+                                        <div class="scale-item">
+                                            <label>A:</label>
+                                            <input type="number" name="grade_a" value="90" min="0" max="100" class="scale-input">
+                                            <span>- 100%</span>
+                                        </div>
+                                        <div class="scale-item">
+                                            <label>B:</label>
+                                            <input type="number" name="grade_b" value="80" min="0" max="100" class="scale-input">
+                                            <span>- 89%</span>
+                                        </div>
+                                        <div class="scale-item">
+                                            <label>C:</label>
+                                            <input type="number" name="grade_c" value="70" min="0" max="100" class="scale-input">
+                                            <span>- 79%</span>
+                                        </div>
+                                        <div class="scale-item">
+                                            <label>D:</label>
+                                            <input type="number" name="grade_d" value="60" min="0" max="100" class="scale-input">
+                                            <span>- 69%</span>
+                                        </div>
+                                        <div class="scale-item">
+                                            <label>F:</label>
+                                            <span>0 - 59%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" id="cancelCourseCreation">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="saveDraft">
+                                <i class="fas fa-save"></i> Save as Draft
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="createCourse">
+                                <i class="fas fa-plus"></i> Create Course
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+
+
+        <!-- Course Management Modal -->
+        <div id="manageCourseModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3 id="manageCourseTitle">Manage Course</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="course-tabs">
+                        <button class="tab-btn active" data-tab="overview">Overview</button>
+                        <button class="tab-btn" data-tab="students">Students</button>
+                        <button class="tab-btn" data-tab="assignments">Assignments</button>
+                        <button class="tab-btn" data-tab="settings">Settings</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- Overview Tab -->
+                        <div id="overviewTab" class="tab-panel active">
+                            <div class="course-overview">
+                                <div class="overview-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number" id="courseStudentCount">0</span>
+                                        <span class="stat-label">Students</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" id="courseAssignmentCount">0</span>
+                                        <span class="stat-label">Assignments</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" id="coursePresentationCount">0</span>
+                                        <span class="stat-label">Presentations</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Students Tab -->
+                        <div id="studentsTab" class="tab-panel">
+                            <div class="students-list" id="courseStudentsList">
+                                <!-- Students will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Assignments Tab -->
+                        <div id="assignmentsTab" class="tab-panel">
+                            <div class="assignments-actions">
+                                <button class="btn btn-primary" id="addAssignmentBtn">Add Assignment</button>
+                            </div>
+                            <div class="assignments-list" id="courseAssignmentsList">
+                                <!-- Assignments will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Settings Tab -->
+                        <div id="settingsTab" class="tab-panel">
+                            <form id="courseSettingsForm">
+                                <div class="form-group">
+                                    <label for="editCourseTitle">Course Title</label>
+                                    <input type="text" id="editCourseTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editCourseDescription">Description</label>
+                                    <textarea id="editCourseDescription" rows="4"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editCourseStatus">Status</label>
+                                    <select id="editCourseStatus">
+                                        <option value="active">Active</option>
+                                        <option value="draft">Draft</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="archived">Archived</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="updateCourseBtn">Update Course</button>
+                    <button class="btn btn-danger" id="deleteCourseBtn">Delete Course</button>
+                    <button class="btn btn-secondary" id="closeCourseModalBtn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include utilities and main scripts -->
+    <script src="../../js/utils.js"></script>
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/lecturer-navigation.js"></script>
+    <script src="../../js/lecturer-courses.js"></script>
+    <script>
+        // Enhanced user info update function
+function updateUserInfo() {
+    try {
+        const userStr = localStorage.getItem('user');
+        console.log('👤 Raw user data from localStorage:', userStr);
+        
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            console.log('📊 Parsed user data:', user);
+            
+            const userNameEl = document.getElementById('userName');
+            const userRoleEl = document.querySelector('.user-role');
+            
+            // Update user name with multiple fallbacks
+            const userName = user.name || user.username || user.fullName || user.displayName || 'Lecturer';
+            if (userNameEl) {
+                userNameEl.textContent = userName;
+                console.log('✅ Updated userName to:', userName);
+            }
+            
+            // Update user role
+            const userRole = user.role || 'lecturer';
+            if (userRoleEl) {
+                userRoleEl.textContent = userRole.toUpperCase();
+            }
+            
+        } else {
+            console.log('❌ No user data found in localStorage');
+        }
+    } catch (error) {
+        console.error('💥 Error updating user info:', error);
+    }
+}
+
+// Enhanced function to fetch and update user profile
+async function fetchAndUpdateUserProfile() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('❌ No token available for profile fetch');
+            return;
+        }
+
+        console.log('🔄 Fetching fresh user profile...');
+        
+        const response = await fetch('/api/auth/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.user) {
+                console.log('✅ Fresh user profile fetched:', data.user);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                updateUserInfo();
+            }
+        } else {
+            console.log('⚠️ Profile fetch failed, using cached data');
+            updateUserInfo();
+        }
+    } catch (error) {
+        console.error('💥 Error fetching profile:', error);
+        updateUserInfo();
+    }
+}
+
+// Load lecturer courses data and update stats
+async function loadLecturerCoursesData() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('❌ No token found');
+            return;
+        }
+
+        console.log('📚 Loading lecturer courses data...');
+
+        const response = await fetch('/api/lecturer/courses', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('📊 Courses data received:', data);
+            
+            if (data.success && data.courses) {
+                updateCoursesPageStats(data.courses);
+                
+                // Update the course filters with real data
+                if (window.courseFilters) {
+                    window.courseFilters.courses = data.courses;
+                    window.courseFilters.filteredCourses = [...data.courses];
+                    window.courseFilters.applyFilters();
+                }
+            }
+        } else {
+            console.error('❌ Failed to fetch courses:', response.status);
+        }
+
+    } catch (error) {
+        console.error('💥 Error loading lecturer courses:', error);
+    }
+}
+
+// Update courses page statistics
+function updateCoursesPageStats(courses) {
+    console.log('📈 Updating courses page stats...');
+    
+    // Update total courses
+    const totalCoursesEl = document.getElementById('totalCourses');
+    if (totalCoursesEl) {
+        totalCoursesEl.textContent = courses.length;
+    }
+
+    // Update active courses
+    const activeCourses = courses.filter(course => 
+        course.status === 'active' || course.status === 'published' || !course.status
+    );
+    const activeCoursesEl = document.getElementById('activeCourses');
+    if (activeCoursesEl) {
+        activeCoursesEl.textContent = activeCourses.length;
+    }
+
+    // Update total students
+    const totalStudents = courses.reduce((total, course) => {
+        return total + (course.enrolledCount || course.students?.length || 0);
+    }, 0);
+    const totalStudentsEl = document.getElementById('totalStudents');
+    if (totalStudentsEl) {
+        totalStudentsEl.textContent = totalStudents;
+    }
+
+    // Update assignments count
+    const totalAssignmentsEl = document.getElementById('totalAssignments');
+    if (totalAssignmentsEl) {
+        totalAssignmentsEl.textContent = '0'; // Update when assignments data is available
+    }
+
+    console.log('✅ Stats updated:', {
+        total: courses.length,
+        active: activeCourses.length,
+        students: totalStudents
+    });
+}
+        // Enhanced Search and Filter Functionality
+        class ModernCourseFilters {
+            constructor() {
+                this.courses = [];
+                this.filteredCourses = [];
+                this.currentFilters = {
+                    search: '',
+                    status: 'all',
+                    category: '',
+                    sort: 'name-asc',
+                    view: 'grid'
+                };
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.loadCourses();
+            }
+
+            bindEvents() {
+                // Search input
+                const searchInput = document.getElementById('searchInput');
+                const clearSearch = document.getElementById('clearSearch');
+
+                searchInput.addEventListener('input', (e) => {
+                    this.currentFilters.search = e.target.value.toLowerCase();
+                    this.applyFilters();
+                    this.toggleClearButton();
+                });
+
+                clearSearch.addEventListener('click', () => {
+                    searchInput.value = '';
+                    this.currentFilters.search = '';
+                    this.applyFilters();
+                    this.toggleClearButton();
+                    searchInput.focus();
+                });
+
+                // Filter tabs
+                document.querySelectorAll('.filter-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        // Remove active class from all tabs
+                        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                        // Add active class to clicked tab
+                        e.target.classList.add('active');
+                        
+                        this.currentFilters.status = e.target.getAttribute('data-filter');
+                        this.applyFilters();
+                    });
+                });
+
+                // Category filter
+                document.getElementById('categoryFilter').addEventListener('change', (e) => {
+                    this.currentFilters.category = e.target.value;
+                    this.applyFilters();
+                });
+
+                // Sort filter
+                document.getElementById('sortFilter').addEventListener('change', (e) => {
+                    this.currentFilters.sort = e.target.value;
+                    this.applyFilters();
+                });
+
+                // View options
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        this.currentFilters.view = e.target.getAttribute('data-view');
+                        this.updateView();
+                    });
+                });
+
+                // Export button
+                document.getElementById('exportCoursesBtn').addEventListener('click', () => {
+                    this.exportCourses();
+                });
+            }
+
+            toggleClearButton() {
+                const clearBtn = document.getElementById('clearSearch');
+                const searchInput = document.getElementById('searchInput');
+                
+                if (searchInput.value.trim()) {
+                    clearBtn.style.opacity = '1';
+                } else {
+                    clearBtn.style.opacity = '0';
+                }
+            }
+
+            async loadCourses() {
+                try {
+                    // Simulate API call - replace with actual API endpoint
+                    this.courses = await this.fetchCoursesFromAPI();
+                    this.filteredCourses = [...this.courses];
+                    this.applyFilters();
+                } catch (error) {
+                    console.error('Error loading courses:', error);
+                    this.showError('Failed to load courses');
+                }
+            }
+
+            async fetchCoursesFromAPI() {
+                // Simulated course data - replace with actual API call
+                return [
+                    {
+                        id: 1,
+                        name: 'Introduction to Computer Science',
+                        code: 'CS101',
+                        description: 'Basic concepts of programming and computer science',
+                        category: 'computer-science',
+                        status: 'active',
+                        students: 45,
+                        createdDate: new Date('2024-01-15')
+                    },
+                    {
+                        id: 2,
+                        name: 'Advanced Mathematics',
+                        code: 'MATH301',
+                        description: 'Calculus and linear algebra for advanced students',
+                        category: 'mathematics',
+                        status: 'active',
+                        students: 32,
+                        createdDate: new Date('2024-02-01')
+                    },
+                    {
+                        id: 3,
+                        name: 'Database Design',
+                        code: 'CS201',
+                        description: 'Principles of database design and management',
+                        category: 'computer-science',
+                        status: 'draft',
+                        students: 0,
+                        createdDate: new Date('2024-03-10')
+                    }
+                ];
+            }
+
+            applyFilters() {
+                let filtered = [...this.courses];
+
+                // Apply search filter
+                if (this.currentFilters.search) {
+                    filtered = filtered.filter(course => 
+                        course.name.toLowerCase().includes(this.currentFilters.search) ||
+                        course.code.toLowerCase().includes(this.currentFilters.search) ||
+                        course.description.toLowerCase().includes(this.currentFilters.search)
+                    );
+                }
+
+                // Apply status filter
+                if (this.currentFilters.status !== 'all') {
+                    filtered = filtered.filter(course => course.status === this.currentFilters.status);
+                }
+
+                // Apply category filter
+                if (this.currentFilters.category) {
+                    filtered = filtered.filter(course => course.category === this.currentFilters.category);
+                }
+
+                // Apply sorting
+                filtered = this.sortCourses(filtered);
+
+                this.filteredCourses = filtered;
+                this.updateResultsCount();
+                this.renderCourses();
+            }
+
+            sortCourses(courses) {
+                const [field, direction] = this.currentFilters.sort.split('-');
+                
+                return courses.sort((a, b) => {
+                    let valueA, valueB;
+                    
+                    switch(field) {
+                        case 'name':
+                            valueA = a.name.toLowerCase();
+                            valueB = b.name.toLowerCase();
+                            break;
+                        case 'date':
+                            valueA = a.createdDate;
+                            valueB = b.createdDate;
+                            break;
+                        case 'students':
+                            valueA = a.students;
+                            valueB = b.students;
+                            break;
+                        default:
+                            return 0;
+                    }
+                    
+                    if (direction === 'asc') {
+                        return valueA > valueB ? 1 : -1;
+                    } else {
+                        return valueA < valueB ? 1 : -1;
+                    }
+                });
+            }
+
+            updateResultsCount() {
+                const count = this.filteredCourses.length;
+                const resultsText = count === 1 ? '1 course found' : `${count} courses found`;
+                document.getElementById('resultsCount').textContent = resultsText;
+            }
+
+            updateView() {
+                const coursesGrid = document.getElementById('coursesGrid');
+                coursesGrid.className = this.currentFilters.view === 'grid' ? 'courses-grid' : 'courses-list';
+                this.renderCourses();
+            }
+
+            renderCourses() {
+                const container = document.getElementById('coursesGrid');
+                
+                if (this.filteredCourses.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-courses-message">
+                            <i class="fas fa-search" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
+                            <h3>No courses found</h3>
+                            <p>Try adjusting your search criteria or create a new course.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const coursesHTML = this.filteredCourses.map(course => `
+                    <div class="course-card ${course.status}">
+                        <div class="course-header">
+                            <h3 class="course-title">${course.name}</h3>
+                            <span class="course-status ${course.status}">${course.status.charAt(0).toUpperCase() + course.status.slice(1)}</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-code">${course.code}</span>
+                            <span class="course-students">
+                                <i class="fas fa-users"></i> ${course.students} students
+                            </span>
+                        </div>
+                        <p class="course-description">${course.description}</p>
+                        <div class="course-actions">
+                            <button class="btn btn-primary btn-sm" onclick="manageCourse(${course.id})">
+                                <i class="fas fa-cog"></i> Manage
+                            </button>
+                            <button class="btn btn-outline btn-sm" onclick="viewCourse(${course.id})">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = coursesHTML;
+            }
+
+            exportCourses() {
+                const csvContent = this.generateCSV();
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `courses_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+
+            generateCSV() {
+                const headers = ['Name', 'Code', 'Description', 'Category', 'Status', 'Students', 'Created Date'];
+                const rows = this.filteredCourses.map(course => [
+                    course.name,
+                    course.code,
+                    course.description,
+                    course.category,
+                    course.status,
+                    course.students,
+                    course.createdDate.toISOString().split('T')[0]
+                ]);
+
+                return [headers, ...rows].map(row => 
+                    row.map(field => `"${field}"`).join(',')
+                ).join('\n');
+            }
+
+            showError(message) {
+                const container = document.getElementById('coursesGrid');
+                container.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #dc3545; margin-bottom: 16px;"></i>
+                        <h3>Error</h3>
+                        <p>${message}</p>
+                        <button class="btn btn-primary" onclick="location.reload()">
+                            <i class="fas fa-refresh"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize the modern filters when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded - Initializing components');
+            
+            try {
+                window.courseFilters = new ModernCourseFilters();
+                console.log('ModernCourseFilters initialized');
+                
+                // Initialize LecturerCourses class for form handling
+                window.lecturerCourses = new LecturerCourses();
+                console.log('LecturerCourses initialized');
+                
+            } catch (error) {
+                console.error('Error initializing components:', error);
+            }
+            
+            // Bind create course button
+            const createCourseBtn = document.getElementById('createCourseBtn');
+            console.log('Create course button element:', createCourseBtn);
+            if (createCourseBtn) {
+                console.log('Adding click event listener to create course button');
+                createCourseBtn.addEventListener('click', function(e) {
+                    console.log('Create course button clicked!', e);
+                    showCourseCreationForm();
+                });
+            } else {
+                console.error('Create course button not found!');
+            }
+            
+            // Bind cancel button
+            const cancelBtn = document.getElementById('cancelCourseCreation');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', hideCourseCreationForm);
+            }
+            
+            // Initialize grading schema validation
+            const weightInputs = document.querySelectorAll('.weight-input');
+            weightInputs.forEach(input => {
+                input.addEventListener('input', updateGradingTotal);
+            });
+        });
+
+        // Helper functions for course actions
+        function manageCourse(courseId) {
+            console.log('Managing course:', courseId);
+            // Implementation for course management
+        }
+
+        function viewCourse(courseId) {
+            console.log('Viewing course:', courseId);
+            // Implementation for course viewing
+        }
+
+        function showCourseCreationForm() {
+            console.log('showCourseCreationForm called');
+            const formSection = document.getElementById('courseCreationSection');
+            const createBtn = document.getElementById('createCourseBtn');
+            
+            console.log('Form section:', formSection);
+            console.log('Create button:', createBtn);
+            
+            if (formSection) {
+                formSection.style.display = 'block';
+                formSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                console.log('Form section shown');
+            } else {
+                console.error('Form section not found!');
+            }
+            
+            // Hide the create button
+            if (createBtn) {
+                createBtn.style.display = 'none';
+                console.log('Create button hidden');
+            } else {
+                console.error('Create button not found!');
+            }
+        }
+
+        function hideCourseCreationForm() {
+            const formSection = document.getElementById('courseCreationSection');
+            const createBtn = document.getElementById('createCourseBtn');
+            
+            formSection.style.display = 'none';
+            createBtn.style.display = 'inline-flex';
+            
+            // Reset form
+            document.getElementById('createCourseForm').reset();
+            
+            // Reset grading weights to defaults
+            document.querySelector('input[name="assignments_weight"]').value = 30;
+            document.querySelector('input[name="midterm_weight"]').value = 25;
+            document.querySelector('input[name="final_weight"]').value = 35;
+            document.querySelector('input[name="participation_weight"]').value = 10;
+            document.getElementById('totalWeight').textContent = '100';
+            
+            // Reset weight indicator
+            const indicator = document.getElementById('weightIndicator');
+            if (indicator) {
+                indicator.classList.remove('warning', 'error');
+            }
+        }
+
+        function updateGradingTotal() {
+            const assignments = parseInt(document.querySelector('input[name="assignments_weight"]').value) || 0;
+            const midterm = parseInt(document.querySelector('input[name="midterm_weight"]').value) || 0;
+            const final = parseInt(document.querySelector('input[name="final_weight"]').value) || 0;
+            const participation = parseInt(document.querySelector('input[name="participation_weight"]').value) || 0;
+            
+            const total = assignments + midterm + final + participation;
+            
+            const totalSpan = document.getElementById('totalWeight');
+            const indicator = document.getElementById('weightIndicator');
+            
+            if (totalSpan) {
+                totalSpan.textContent = total;
+            }
+            
+            if (indicator) {
+                // Reset classes
+                indicator.classList.remove('warning', 'error');
+                
+                if (total === 100) {
+                    // Perfect - green indicator
+                } else if (total > 90 && total < 110) {
+                    indicator.classList.add('warning');
+                } else {
+                    indicator.classList.add('error');
+                }
+            }
+        }
+
+        // Add this function to lecturer/courses.html
+function updateCoursesPageStats(courses) {
+    // Update the stats cards in courses page
+    const allCoursesEl = document.querySelector('[data-stat="all-courses"]');
+    const currentTeachingEl = document.querySelector('[data-stat="current-teaching"]');
+    const enrolledStudentsEl = document.querySelector('[data-stat="enrolled-students"]');
+    const createdAssignmentsEl = document.querySelector('[data-stat="created-assignments"]');
+
+    if (allCoursesEl) {
+        allCoursesEl.textContent = courses.length;
+    }
+
+    const activeCourses = courses.filter(course => 
+        course.status === 'active' || course.status === 'published' || !course.status
+    );
+    
+    if (currentTeachingEl) {
+        currentTeachingEl.textContent = activeCourses.length;
+    }
+
+    const totalStudents = courses.reduce((total, course) => {
+        return total + (course.enrolledCount || course.students?.length || 0);
+    }, 0);
+
+    if (enrolledStudentsEl) {
+        enrolledStudentsEl.textContent = totalStudents;
+    }
+
+    // You can set assignments count if you have that data
+    if (createdAssignmentsEl) {
+        createdAssignmentsEl.textContent = '0'; // Update this when you have assignments data
+    }
+}
+    </script>
+</body>
+</html>

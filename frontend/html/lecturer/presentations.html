@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentations - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/presentations.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+       <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Lecturer</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="manage-courses.html" class="nav-link">
+                        <i class="fas fa-cogs"></i>
+                        <span>Manage Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link active">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="evaluation.html" class="nav-link">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Evaluations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">Presentations</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="header-btn" id="logoutBtn2" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Presentation Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card square">
+                        <div class="stat-icon">
+                            <i class="fas fa-presentation"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalPresentations">0</h3>
+                            <p>Total Presentations</p>
+                        </div>
+                    </div>
+                    <div class="stat-card square">
+                        <div class="stat-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="activePresentations">0</h3>
+                            <p>Active</p>
+                        </div>
+                    </div>
+                    <div class="stat-card square">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingReviews">0</h3>
+                            <p>Pending Reviews</p>
+                        </div>
+                    </div>
+                    <div class="stat-card square">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="averageScore">0</h3>
+                            <p>Average Score</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search and Filters -->
+                <div class="search-filter-bar">
+                    <div class="search-section">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" placeholder="Search presentations..." class="search-input">
+                            <button class="clear-search" id="clearSearch" title="Clear search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="advanced-search" id="advancedSearch">
+                            <input type="text" id="advancedSearchInput" placeholder="Advanced search..." class="advanced-input">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <select id="statusFilter" class="filter-select">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="pending">Pending Review</option>
+                                <option value="completed">Completed</option>
+                                <option value="draft">Draft</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <select id="courseFilter" class="filter-select">
+                                <option value="">All Courses</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <select id="sortBy" class="filter-select">
+                                <option value="date-desc">Latest First</option>
+                                <option value="date-asc">Oldest First</option>
+                                <option value="title">Title A-Z</option>
+                                <option value="course">Course</option>
+                                <option value="score">Average Score</option>
+                            </select>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="action-btn" id="viewToggle" title="Toggle view">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button class="action-btn" id="exportBtn" title="Export data">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create New Presentation Form -->
+                <div class="create-presentation-section" id="createPresentationSection">
+                    <div class="section-header">
+                        <h3>Create New Presentation</h3>
+                        <button class="toggle-btn" id="toggleCreateForm">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Presentation</span>
+                        </button>
+                        <button class="toggle-btn" id="refreshCoursesBtn" style="margin-left: 10px; background: #10b981;">
+                            <i class="fas fa-refresh"></i>
+                            <span>Refresh Courses</span>
+                        </button>
+                    </div>
+                    
+                    <div class="create-form" id="createPresentationForm" style="display: none;">
+                        <form id="newPresentationForm">
+                            <!-- Basic Information Section -->
+                            <div class="form-section">
+                                <h4><i class="fas fa-info-circle"></i> Basic Information</h4>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="presentationTitle">Presentation Title *</label>
+                                        <input type="text" id="presentationTitle" name="title" required 
+                                               placeholder="Enter presentation title">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="presentationCourse">Course *</label>
+                                        <select id="presentationCourse" name="course">
+                                            <option value="">Select a course</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="presentationType">Presentation Type *</label>
+                                        <select id="presentationType" name="type" required>
+                                            <option value="">Select type</option>
+                                            <option value="individual">Individual Presentation</option>
+                                            <option value="group">Group Presentation</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="presentationDuration">Duration (minutes) *</label>
+                                        <input type="number" id="presentationDuration" name="duration" 
+                                               min="5" max="120" required placeholder="15">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="presentationDescription">ZOOM Link *</label>
+                                    <textarea id="presentationDescription" name="description" rows="3" required 
+                                              placeholder="Enter the ZOOM link for the presentation"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Student Notification Section -->
+                            <div class="form-section">
+                                <h4><i class="fas fa-users"></i> Student Notification</h4>
+                                <div class="notification-options">
+                                    <div class="form-group">
+                                        <div class="radio-group">
+                                            <label class="radio-label">
+                                                <input type="radio" name="notificationMode" value="enrolled" checked>
+                                                <span class="radio-custom"></span>
+                                                Notify All Enrolled Students
+                                            </label>
+                                            <label class="radio-label">
+                                                <input type="radio" name="notificationMode" value="all">
+                                                <span class="radio-custom"></span>
+                                                All Students
+                                            </label>
+                                            <label class="radio-label">
+                                                <input type="radio" name="notificationMode" value="selected">
+                                                <span class="radio-custom"></span>
+                                                Select Specific Students
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Student Selection Area -->
+                                    <div class="student-selection" id="studentSelection" style="display: none;">
+                                        <div class="form-group">
+                                            <label>Select Students to Notify:</label>
+                                            <div class="student-controls">
+                                                <button type="button" class="btn-small" id="selectAllStudents">
+                                                    <i class="fas fa-check-double"></i> Select All
+                                                </button>
+                                                <button type="button" class="btn-small" id="deselectAllStudents">
+                                                    <i class="fas fa-times"></i> Deselect All
+                                                </button>
+                                            </div>
+                                            <div class="student-list" id="studentList">
+                                                <div class="loading-students">
+                                                    <i class="fas fa-spinner fa-spin"></i> Loading students...
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Schedule Section -->
+                            <div class="form-section">
+                                <h4><i class="fas fa-calendar"></i> Schedule & Deadlines</h4>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="assignedDate">Assigned Date</label>
+                                        <input type="date" id="assignedDate" name="assignedDate">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="dueDate">Due Date</label>
+                                        <input type="date" id="dueDate" name="dueDate">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="presentationDate">Presentation Date</label>
+                                        <input type="date" id="presentationDate" name="presentationDate">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="presentationTime">Presentation Time</label>
+                                        <input type="time" id="presentationTime" name="presentationTime">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Grading Section (Simplified) -->
+                            <div class="form-section">
+                                <h4><i class="fas fa-star"></i> Grading</h4>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="maxScore">Maximum Score</label>
+                                        <input type="number" id="maxScore" name="maxScore" 
+                                               min="1" max="100" placeholder="100">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="weightage">Course Weightage (%)</label>
+                                        <input type="number" id="weightage" name="weightage" 
+                                               min="0" max="100" placeholder="20">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="cancelCreateBtn">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="createPresentationBtn">
+                                    <i class="fas fa-plus"></i> Create Presentation
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Presentations Grid -->
+                <div class="presentations-container" id="presentationsContainer">
+                    <!-- Upcoming Presentations Section -->
+                    <div class="presentations-section">
+                        <div class="section-header-cards">
+                            <h3>Upcoming Presentations</h3>
+                            <span class="section-count" id="upcomingCount">0</span>
+                        </div>
+                        <div class="presentations-grid" id="upcomingPresentations">
+                            <!-- Upcoming presentations will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Pending Review Section -->
+                    <div class="presentations-section">
+                        <div class="section-header-cards">
+                            <h3>Pending Review</h3>
+                            <span class="section-count" id="pendingCount">0</span>
+                        </div>
+                        <div class="presentations-grid" id="pendingPresentations">
+                            <!-- Pending review presentations will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Graded Presentations Section -->
+                    <div class="presentations-section">
+                        <div class="section-header-cards">
+                            <h3>Graded Presentations</h3>
+                            <span class="section-count" id="gradedCount">0</span>
+                        </div>
+                        <div class="presentations-grid" id="gradedPresentations">
+                            <!-- Graded presentations will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Review Presentation Modal -->
+        <div id="reviewPresentationModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3 id="reviewPresentationTitle">Review Presentation</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="presentation-info">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Student:</label>
+                                <span id="studentName"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Course:</label>
+                                <span id="presentationCourseInfo"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Duration:</label>
+                                <span id="presentationDurationInfo"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Submitted:</label>
+                                <span id="submissionDate"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grading-section">
+                        <h4>Grading Criteria</h4>
+                        <div class="criteria-grid">
+                            <div class="criteria-item">
+                                <label for="contentScore">Content Quality (30%)</label>
+                                <input type="number" id="contentScore" min="0" max="30" placeholder="0-30">
+                            </div>
+                            <div class="criteria-item">
+                                <label for="deliveryScore">Delivery & Presentation (25%)</label>
+                                <input type="number" id="deliveryScore" min="0" max="25" placeholder="0-25">
+                            </div>
+                            <div class="criteria-item">
+                                <label for="visualScore">Visual Aids (20%)</label>
+                                <input type="number" id="visualScore" min="0" max="20" placeholder="0-20">
+                            </div>
+                            <div class="criteria-item">
+                                <label for="timingScore">Time Management (15%)</label>
+                                <input type="number" id="timingScore" min="0" max="15" placeholder="0-15">
+                            </div>
+                            <div class="criteria-item">
+                                <label for="qaScore">Q&A Handling (10%)</label>
+                                <input type="number" id="qaScore" min="0" max="10" placeholder="0-10">
+                            </div>
+                            <div class="criteria-item total-score">
+                                <label>Total Score:</label>
+                                <span id="totalScore">0/100</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedback">Detailed Feedback</label>
+                            <textarea id="feedback" rows="6" placeholder="Provide detailed feedback on the presentation..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="submitGradeBtn">Submit Grade</button>
+                    <button class="btn btn-secondary" id="cancelReviewBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/lecturer-navigation.js"></script>
+    <script src="../../js/lecturer-presentations.js"></script>
+</body>
+</html>

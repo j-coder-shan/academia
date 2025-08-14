@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Enhanced Assignments Page Styles */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .page-header-content h1.page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            color: white;
+        }
+        
+        .page-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .page-header-actions .btn-outline {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .page-header-actions .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            margin-bottom: 2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .stat-primary .stat-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .stat-warning .stat-icon { background: linear-gradient(135deg, #feca57, #ff9ff3); }
+        .stat-success .stat-icon { background: linear-gradient(135deg, #10ac84, #06d6a0); }
+        .stat-info .stat-icon { background: linear-gradient(135deg, #17a2b8, #2980b9); }
+        
+        .stat-content {
+            flex: 1;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #34495e;
+            margin: 0.25rem 0;
+        }
+        
+        .stat-description {
+            font-size: 0.875rem;
+            color: #7f8c8d;
+        }
+        
+        /* Controls Section */
+        .controls-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-box {
+            position: relative;
+            max-width: 500px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+            z-index: 2;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #6c757d;
+        }
+        
+        .filter-tab:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .filter-tab.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+        
+        .sort-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+            color: #495057;
+            min-width: 200px;
+        }
+        
+        /* Assignments Section */
+        .assignments-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 0.25rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 0.25rem;
+        }
+        
+        .view-btn {
+            padding: 0.5rem 0.75rem;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6c757d;
+        }
+        
+        .view-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Loading and Empty States */
+        .loading-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Assignments Container */
+        .assignments-container {
+            min-height: 300px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Assignment Cards */
+        .assignment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .assignment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .assignment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .assignment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .assignment-header h4 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .assignment-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .assignment-status.pending {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            color: #d35400;
+        }
+
+        .assignment-status.submitted {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #2980b9;
+        }
+
+        .assignment-status.graded {
+            background: linear-gradient(135deg, #d299c2, #fef9d7);
+            color: #27ae60;
+        }
+
+        .assignment-info {
+            margin-bottom: 1rem;
+        }
+
+        .assignment-info p {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .assignment-info i {
+            width: 16px;
+            color: #667eea;
+        }
+
+        .assignment-description {
+            margin-bottom: 1.5rem;
+        }
+
+        .assignment-description p {
+            margin: 0;
+            color: #495057;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .assignment-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .assignment-actions .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .assignment-actions .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .assignment-actions .btn-primary:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+            transform: translateY(-2px);
+        }
+
+        .assignment-actions .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #e9ecef;
+        }
+
+        .assignment-actions .btn-secondary:hover {
+            background: #e9ecef;
+            color: #495057;
+            transform: translateY(-2px);
+        }
+
+        .assignment-actions .btn-info {
+            background: linear-gradient(135deg, #17a2b8, #2980b9);
+            color: white;
+        }
+
+        .assignment-actions .btn-info:hover {
+            background: linear-gradient(135deg, #138496, #1f618d);
+            transform: translateY(-2px);
+        }
+
+        .assignment-actions .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .assignment-actions .btn-success:hover {
+            background: linear-gradient(135deg, #218838, #1ea085);
+            transform: translateY(-2px);
+        }
+
+        /* List View Styles */
+        .assignments-container.list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .assignments-container.list-view .assignment-card {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .assignments-container.list-view .assignment-header {
+            flex: 2;
+            margin-bottom: 0;
+        }
+
+        .assignments-container.list-view .assignment-info {
+            flex: 2;
+            margin-bottom: 0;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .assignments-container.list-view .assignment-info p {
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .assignments-container.list-view .assignment-description {
+            flex: 3;
+            margin-bottom: 0;
+        }
+
+        .assignments-container.list-view .assignment-actions {
+            flex: 1;
+            justify-content: flex-end;
+            margin-bottom: 0;
+        }
+
+        /* Priority Indicators */
+        .assignment-card.priority-high::before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .assignment-card.priority-medium::before {
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+        }
+
+        .assignment-card.priority-low::before {
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+        }
+
+        /* Due Date Indicators */
+        .assignment-card.due-soon {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .assignment-card.due-today {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            border-left: 4px solid #e53e3e;
+        }
+
+        /* Assignment Score Display */
+        .assignment-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .assignment-score.excellent {
+            background: linear-gradient(135deg, #10ac84, #06d6a0);
+        }
+
+        .assignment-score.good {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+        }
+
+        .assignment-score.average {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .assignment-score.poor {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        /* Modal Improvements */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .modal-header .close {
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-muted { color: #6c757d; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 1rem; }
+        .mt-3 { margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Student</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link active">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">Assignments</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="header-btn" id="logoutBtn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Page Header with Quick Actions -->
+                
+
+                <!-- Assignment Statistics Cards -->
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-card stat-primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalAssignments">0</div>
+                                <div class="stat-label">Total Assignments</div>
+                                <div class="stat-description">All your course assignments</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card stat-warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="pendingAssignments">0</div>
+                                <div class="stat-label">Pending</div>
+                                <div class="stat-description">Awaiting submission</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card stat-success">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="submittedAssignments">0</div>
+                                <div class="stat-label">Submitted</div>
+                                <div class="stat-description">Awaiting grading</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card stat-info">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="averageGrade">--</div>
+                                <div class="stat-label">Average Grade</div>
+                                <div class="stat-description">Overall performance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search and Filter Controls -->
+                <div class="controls-section">
+                    <div class="search-container">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" placeholder="Search assignments by title, course, or description..." class="search-input">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-container">
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-filter="all">
+                                <i class="fas fa-list"></i>
+                                <span>All</span>
+                            </button>
+                            <button class="filter-tab" data-filter="pending">
+                                <i class="fas fa-hourglass-half"></i>
+                                <span>Pending</span>
+                            </button>
+                            <button class="filter-tab" data-filter="submitted">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Submitted</span>
+                            </button>
+                            <button class="filter-tab" data-filter="graded">
+                                <i class="fas fa-check-double"></i>
+                                <span>Graded</span>
+                            </button>
+                        </div>
+                        
+                        <div class="sort-container">
+                            <select id="sortSelect" class="sort-select">
+                                <option value="due-date">Sort by Due Date</option>
+                                <option value="title">Sort by Title</option>
+                                <option value="course">Sort by Course</option>
+                                <option value="status">Sort by Status</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assignments Grid -->
+                <div class="assignments-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Your Assignments</h2>
+                        <div class="view-toggle">
+                            <button class="view-btn active" data-view="grid" title="Grid View">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button class="view-btn" data-view="list" title="List View">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading State -->
+                    <div id="loadingState" class="loading-state" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Loading assignments...</p>
+                    </div>
+                    
+                    <!-- Assignments Container -->
+                    <div class="assignments-container" id="assignmentsGrid">
+                        <!-- Assignments will be dynamically loaded here -->
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <div class="empty-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3>No Assignments Found</h3>
+                        <p>You don't have any assignments matching your current filters.</p>
+                        <button class="btn btn-primary" onclick="document.querySelector('[data-filter=all]').click()">
+                            Show All Assignments
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Assignment Submission Modal -->
+        <div id="submitAssignmentModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Submit Assignment</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="submitAssignmentForm">
+                        <div class="form-group">
+                            <label for="assignmentTitle">Assignment</label>
+                            <input type="text" id="assignmentTitle" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="submissionText">Submission Text</label>
+                            <textarea id="submissionText" rows="8" placeholder="Enter your assignment submission..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="attachmentFile">Attachment (Optional)</label>
+                            <input type="file" id="attachmentFile" accept=".pdf,.doc,.docx,.txt">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="submitAssignmentBtn">Submit Assignment</button>
+                    <button class="btn btn-secondary" id="cancelSubmissionBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+            </div>
+        </main>
+
+        
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/student-assignments.js"></script>
+</body>
+</html>

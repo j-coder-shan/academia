@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Lecturer</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="manage-courses.html" class="nav-link">
+                        <i class="fas fa-cogs"></i>
+                        <span>Manage Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="evaluation.html" class="nav-link active">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Evaluations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2>Assignments</h2>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" id="createAssignmentBtn">
+                        <i class="fas fa-plus"></i> Create Assignment
+                    </button>
+                    <button class="notification-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="logout-btn" id="logoutBtn2" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Assignment Stats -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Total Assignments</div>
+                            <div class="stat-card-icon primary">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="totalAssignments">0</div>
+                        <div class="stat-card-label">All assignments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Active</div>
+                            <div class="stat-card-icon success">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="activeAssignments">0</div>
+                        <div class="stat-card-label">Currently active</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Pending Grading</div>
+                            <div class="stat-card-icon warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="pendingGrading">0</div>
+                        <div class="stat-card-label">Need grading</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Avg Score</div>
+                            <div class="stat-card-icon info">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="averageScore">0</div>
+                        <div class="stat-card-label">Class average</div>
+                    </div>
+                </div>
+
+                <!-- Filters and Search -->
+                <div class="filters-section">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search assignments...">
+                    </div>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="active">Active</button>
+                        <button class="filter-tab" data-filter="pending">Pending Grading</button>
+                        <button class="filter-tab" data-filter="completed">Completed</button>
+                    </div>
+                    <div class="filter-options">
+                        <select id="courseFilter">
+                            <option value="">All Courses</option>
+                        </select>
+                        <select id="sortBy">
+                            <option value="date">Sort by Date</option>
+                            <option value="title">Sort by Title</option>
+                            <option value="course">Sort by Course</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Assignments Grid -->
+                <div class="assignments-grid" id="assignmentsGrid">
+                    <!-- Assignments will be loaded here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Create Assignment Modal -->
+        <div id="createAssignmentModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Assignment</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="createAssignmentForm">
+                        <div class="form-group">
+                            <label for="assignmentTitle">Assignment Title</label>
+                            <input type="text" id="assignmentTitle" required placeholder="Enter assignment title">
+                        </div>
+                        <div class="form-group">
+                            <label for="assignmentCourse">Course</label>
+                            <select id="assignmentCourse" required>
+                                <option value="">Select course</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignmentDescription">Description</label>
+                            <textarea id="assignmentDescription" rows="4" required placeholder="Enter assignment description and instructions"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="assignmentType">Type</label>
+                                <select id="assignmentType" required>
+                                    <option value="">Select type</option>
+                                    <option value="essay">Essay</option>
+                                    <option value="project">Project</option>
+                                    <option value="homework">Homework</option>
+                                    <option value="quiz">Quiz</option>
+                                    <option value="lab">Lab Report</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="maxScore">Max Score</label>
+                                <input type="number" id="maxScore" min="1" max="100" placeholder="100">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="assignedDate">Assigned Date</label>
+                                <input type="date" id="assignedDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dueDate">Due Date</label>
+                                <input type="datetime-local" id="dueDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="submissionFormat">Submission Format</label>
+                            <select id="submissionFormat">
+                                <option value="text">Text Submission</option>
+                                <option value="file">File Upload</option>
+                                <option value="both">Text + File</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="allowLateSubmission">
+                                <input type="checkbox" id="allowLateSubmission">
+                                Allow Late Submissions
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="saveAssignmentBtn">Create Assignment</button>
+                    <button class="btn btn-secondary" id="cancelAssignmentBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grade Assignment Modal -->
+        <div id="gradeAssignmentModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3 id="gradeAssignmentTitle">Grade Assignment</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="assignment-info">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Student:</label>
+                                <span id="studentName"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Course:</label>
+                                <span id="assignmentCourseInfo"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Submitted:</label>
+                                <span id="submissionDate"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Max Score:</label>
+                                <span id="maxScoreInfo"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="submission-content">
+                        <h4>Student Submission</h4>
+                        <div class="submission-text" id="submissionText">
+                            <!-- Submission content will be loaded here -->
+                        </div>
+                        <div class="submission-files" id="submissionFiles">
+                            <!-- Attached files will be shown here -->
+                        </div>
+                    </div>
+                    
+                    <div class="grading-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="assignmentScore">Score</label>
+                                <input type="number" id="assignmentScore" min="0" placeholder="Enter score">
+                            </div>
+                            <div class="form-group">
+                                <label for="letterGrade">Letter Grade</label>
+                                <select id="letterGrade">
+                                    <option value="">Auto-assign</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gradingFeedback">Feedback</label>
+                            <textarea id="gradingFeedback" rows="6" placeholder="Provide detailed feedback on the assignment..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="submitGradeBtn">Submit Grade</button>
+                    <button class="btn btn-secondary" id="cancelGradingBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/lecturer-navigation.js"></script>
+    <script src="../../js/lecturer-assignments.js"></script>
+</body>
+</html>

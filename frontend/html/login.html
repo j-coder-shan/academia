@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia LMS - Login</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .message-container {
+            display: none;
+            margin: 15px 0;
+        }
+
+        .error-message, .success-message {
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c53030;
+            border: 1px solid #fed7d7;
+        }
+
+        .success-message {
+            background: #f0fff4;
+            color: #38a169;
+            border: 1px solid #c6f6d5;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+        
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo-container">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+                <p class="subtitle">Welcome to the future of learning</p>
+            </div>
+            
+            <div class="auth-toggle">
+                <button class="toggle-btn active" data-form="login">Sign In</button>
+                <button class="toggle-btn" data-form="register">Register</button>
+            </div>
+            
+            <!-- Message containers -->
+            <div id="errorContainer" class="message-container"></div>
+            <div id="successContainer" class="message-container"></div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-id-card"></i>
+                        <input 
+                            type="text" 
+                            id="loginId" 
+                            name="loginId" 
+                            required 
+                            placeholder="Student/Lecturer ID (e.g., stu001, lec001)"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="loginPassword" 
+                            name="password" 
+                            required 
+                            placeholder="Password"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#forgot-password" class="forgot-link">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-loader hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </form>
+            
+            <!-- Registration Form -->
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-user"></i>
+                        <input 
+                            type="text" 
+                            id="registerName" 
+                            name="name" 
+                            required 
+                            placeholder="Full Name"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-envelope"></i>
+                        <input 
+                            type="email" 
+                            id="registerEmail" 
+                            name="email" 
+                            required 
+                            placeholder="Email Address"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-id-badge"></i>
+                        <input 
+                            type="text" 
+                            id="registerId" 
+                            name="userId" 
+                            required 
+                            placeholder="Student/Lecturer ID (e.g., stu001, lec001)"
+                            pattern="^(stu|lec)\d{3,}$"
+                            title="ID must start with 'stu' or 'lec' followed by at least 3 digits"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="registerPassword" 
+                            name="password" 
+                            required 
+                            placeholder="Password"
+                            minlength="6"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-container">
+                        <i class="fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            required 
+                            placeholder="Confirm Password"
+                            minlength="6"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="role-selector">
+                        <label class="role-option">
+                            <input type="radio" name="role" value="student" required>
+                            <div class="role-card">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>Student</span>
+                            </div>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="role" value="lecturer" required>
+                            <div class="role-card">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <span>Lecturer</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loader hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Form toggle functionality
+        function initFormToggle() {
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            toggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const formType = btn.getAttribute('data-form');
+                    
+                    // Update button states
+                    toggleBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Show/hide forms
+                    if (formType === 'login') {
+                        loginForm.classList.add('active');
+                        registerForm.classList.remove('active');
+                    } else {
+                        registerForm.classList.add('active');
+                        loginForm.classList.remove('active');
+                    }
+                });
+            });
+        }
+        
+        // Password visibility toggle
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.parentNode.querySelector('.password-toggle i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+        
+        // ID format validation
+        function validateId(input) {
+            const value = input.value.toLowerCase();
+            const pattern = /^(stu|lec)\d{3,}$/;
+            
+            if (value && !pattern.test(value)) {
+                input.setCustomValidity('ID must start with "stu" or "lec" followed by at least 3 digits (e.g., stu001, lec001)');
+            } else {
+                input.setCustomValidity('');
+            }
+        }
+        
+        // Password confirmation validation
+        function validatePasswordMatch() {
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmInput = document.getElementById('confirmPassword');
+            
+            if (password !== confirmPassword) {
+                confirmInput.setCustomValidity('Passwords do not match');
+            } else {
+                confirmInput.setCustomValidity('');
+            }
+        }
+
+        // Helper functions for messages
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    ${message}
+                </div>
+            `;
+            errorContainer.style.display = 'block';
+            
+            setTimeout(() => {
+                errorContainer.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const successContainer = document.getElementById('successContainer');
+            successContainer.innerHTML = `
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    ${message}
+                </div>
+            `;
+            successContainer.style.display = 'block';
+        }
+
+        // Login form handler
+        async function handleLogin(event) {
+            event.preventDefault();
+            console.log('🔐 Login form submitted');
+            
+            const loginId = document.getElementById('loginId').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!loginId || !password) {
+                showError('Please enter both ID and Password');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = document.querySelector('#loginForm button[type="submit"]');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoader = submitBtn.querySelector('.btn-loader');
+            
+            btnText.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+            submitBtn.disabled = true;
+            
+            try {
+                // Determine user type and field name from ID
+                const userType = loginId.toLowerCase().startsWith('stu') ? 'student' : 'lecturer';
+                const fieldName = userType === 'student' ? 'studentId' : 'lecturerId';
+                
+                console.log(`📝 Login attempt - UserType: ${userType}, FieldName: ${fieldName}, ID: ${loginId}`);
+                
+                const loginData = {
+                    [fieldName]: loginId,
+                    password: password,
+                    userType: userType
+                };
+                
+                console.log('📤 Sending login data:', loginData);
+                
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                
+                console.log('📡 Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('📊 Login response:', data);
+                
+                if (data.success && data.token) {
+                    console.log('✅ Login successful!');
+                    
+                    // Save authentication data
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    console.log('💾 Data saved to localStorage');
+                    console.log('👤 User role:', data.user.role);
+                    
+                    showSuccess('Login successful! Redirecting...');
+                    
+                    // Redirect based on user role with correct path
+                    setTimeout(() => {
+                        if (data.user.role === 'student') {
+                            console.log('🎓 Redirecting to student dashboard...');
+                            window.location.href = '/html/student/dashboard.html';
+                        } else if (data.user.role === 'lecturer') {
+                            console.log('👨‍🏫 Redirecting to lecturer dashboard...');
+                            window.location.href = '/html/lecturer/dashboard.html';
+                        } else {
+                            console.log('❓ Unknown role, redirecting to student dashboard...');
+                            window.location.href = '/html/student/dashboard.html';
+                        }
+                    }, 1000);
+                    
+                } else {
+                    console.error('❌ Login failed:', data.message);
+                    showError(data.message || 'Login failed. Please check your credentials.');
+                }
+                
+            } catch (error) {
+                console.error('💥 Login error:', error);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                // Reset button state
+                btnText.classList.remove('hidden');
+                btnLoader.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Registration form handler
+        async function handleRegister(event) {
+            event.preventDefault();
+            console.log('📝 Registration form submitted');
+            
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const userId = document.getElementById('registerId').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = document.querySelector('input[name="role"]:checked')?.value;
+            
+            // Validation
+            if (!name || !email || !userId || !password || !confirmPassword || !role) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = document.querySelector('#registerForm button[type="submit"]');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoader = submitBtn.querySelector('.btn-loader');
+            
+            btnText.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        userId,
+                        password,
+                        role
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('📊 Registration response:', data);
+                
+                if (data.success) {
+                    showSuccess('Registration successful! You can now sign in.');
+                    
+                    // Switch to login form after successful registration
+                    setTimeout(() => {
+                        document.querySelector('.toggle-btn[data-form="login"]').click();
+                        document.getElementById('loginId').value = userId;
+                    }, 2000);
+                    
+                } else {
+                    showError(data.message || 'Registration failed. Please try again.');
+                }
+                
+            } catch (error) {
+                console.error('💥 Registration error:', error);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                // Reset button state
+                btnText.classList.remove('hidden');
+                btnLoader.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Login page loaded');
+            
+            initFormToggle();
+            
+            // Add form submit handlers
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+            
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleRegister);
+            }
+            
+            // Add validation listeners
+            const registerIdInput = document.getElementById('registerId');
+            const loginIdInput = document.getElementById('loginId');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const registerPasswordInput = document.getElementById('registerPassword');
+            
+            if (registerIdInput) {
+                registerIdInput.addEventListener('input', () => validateId(registerIdInput));
+            }
+            
+            if (loginIdInput) {
+                loginIdInput.addEventListener('input', () => validateId(loginIdInput));
+            }
+            
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+            }
+            
+            if (registerPasswordInput) {
+                registerPasswordInput.addEventListener('input', validatePasswordMatch);
+            }
+            
+            // Check if already logged in and redirect
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    console.log('🔄 Already logged in, redirecting...');
+                    
+                    if (user.role === 'student') {
+                        window.location.href = '/html/student/dashboard.html';
+                    } else if (user.role === 'lecturer') {
+                        window.location.href = '/html/lecturer/dashboard.html';
+                    }
+                } catch (error) {
+                    console.error('Error parsing stored user data:', error);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="user-name" id="userName">student</div>
+                <div class="user-role">Student</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">Student Dashboard</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <!-- Role switcher will be injected here by JavaScript -->
+                    <button class="header-btn" id="logoutBtn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Dashboard Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Enrolled Courses</div>
+                            <div class="stat-card-icon enrolled">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="enrolledCourses">0</div>
+                        <div class="stat-card-label">Active courses</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Pending Assignments</div>
+                            <div class="stat-card-icon pending">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="pendingAssignments">0</div>
+                        <div class="stat-card-label">Due this week</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Completed Assignments</div>
+                            <div class="stat-card-icon completed">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="completedAssignments">0</div>
+                        <div class="stat-card-label">This semester</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Average Grade</div>
+                            <div class="stat-card-icon grade">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="averageGrade">N/A</div>
+                        <div class="stat-card-label">Current GPA</div>
+                    </div>
+                </div>
+
+                <!-- Recent Courses Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">Recent Courses</h3>
+                        <a href="courses.html" class="btn btn-primary" style="width: 20%;">
+                            <i class="fas fa-eye"></i>
+                            View All
+                        </a>
+                    </div>
+                    <div class="content-card">
+                        <div id="recentCourses" class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Assignments Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">Upcoming Assignments</h3>
+                        <a href="assignments.html" class="btn btn-primary" style="width: 20%;">
+                            <i class="fas fa-eye"></i>
+                            View All
+                        </a>
+                    </div>
+                    <div class="content-card">
+                        <div id="upcomingAssignments" class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">Recent Activity</h3>
+                    </div>
+                    <div class="section-content">
+                        <div id="recentActivity" class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/simple-auth.js"></script>
+    <script src="../../js/utils.js"></script>
+    <script>
+         // Update user info immediately
+        function updateUserInfo() {
+            try {
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    const userNameEl = document.getElementById('userName');
+                    if (userNameEl) {
+                        userNameEl.textContent = user.name || user.username || 'Student';
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating user info:', error);
+            }
+        }
+
+        // Add these functions to your student dashboard.html script section
+
+// Enhanced function to load student dashboard data
+async function loadStudentDashboardData() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('❌ No token found');
+            return;
+        }
+
+        console.log('📊 Loading student dashboard data...');
+
+        // Fetch student enrolled courses
+        const coursesResponse = await fetch('/api/student/courses', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (coursesResponse.ok) {
+            const coursesData = await coursesResponse.json();
+            console.log('📚 Courses data:', coursesData);
+            
+            if (coursesData.success && coursesData.courses) {
+                updateStudentDashboardStats(coursesData.courses);
+                displayRecentCourses(coursesData.courses);
+            }
+        } else {
+            console.error('❌ Failed to fetch courses:', coursesResponse.status);
+        }
+
+        // Fetch assignments data
+        await loadStudentAssignments();
+
+        // Fetch activities
+        await loadRecentActivity();
+
+    } catch (error) {
+        console.error('💥 Error loading dashboard data:', error);
+    }
+}
+
+// Function to update student dashboard statistics
+// Function to update student dashboard statistics
+function updateStudentDashboardStats(courses) {
+    try {
+        console.log('📈 Updating student dashboard stats with courses:', courses);
+
+        // Filter enrolled courses (courses where student is enrolled)
+        const enrolledCourses = courses.filter(course => 
+            course.isEnrolled === true || 
+            course.enrolled === true ||
+            course.enrollmentStatus === 'enrolled'
+        );
+
+        console.log('🎓 Enrolled courses found:', enrolledCourses);
+        console.log('📊 Total courses:', courses.length);
+        console.log('✅ Enrolled count:', enrolledCourses.length);
+
+        // Update the DOM elements with CORRECT IDs from your HTML
+        const enrolledCoursesEl = document.getElementById('enrolledCourses'); // Changed from activeCourses
+        const pendingAssignmentsEl = document.getElementById('pendingAssignments'); // Changed from dueThisWeek
+        const completedAssignmentsEl = document.getElementById('completedAssignments'); // Changed from thisWeek
+        const averageGradeEl = document.getElementById('averageGrade'); // Changed from currentGpa
+
+        // Update enrolled courses count
+        if (enrolledCoursesEl) {
+            enrolledCoursesEl.textContent = enrolledCourses.length;
+            console.log('✅ Updated enrolled courses count to:', enrolledCourses.length);
+        } else {
+            console.log('❌ enrolledCourses element not found');
+        }
+
+        // Calculate assignments
+        const pendingAssignments = calculatePendingAssignments(enrolledCourses);
+        const completedAssignments = calculateCompletedAssignments(enrolledCourses);
+
+        // Update pending assignments
+        if (pendingAssignmentsEl) {
+            pendingAssignmentsEl.textContent = pendingAssignments;
+            console.log('✅ Updated pending assignments:', pendingAssignments);
+        }
+
+        // Update completed assignments
+        if (completedAssignmentsEl) {
+            completedAssignmentsEl.textContent = completedAssignments;
+            console.log('✅ Updated completed assignments:', completedAssignments);
+        }
+
+        // Update average grade
+        if (averageGradeEl) {
+            averageGradeEl.textContent = enrolledCourses.length > 0 ? 'B+' : 'N/A';
+        }
+
+        // Store the count for use across pages
+        localStorage.setItem('studentEnrolledCount', enrolledCourses.length.toString());
+        
+    } catch (error) {
+        console.error('💥 Error updating dashboard stats:', error);
+    }
+}
+
+// Helper functions
+function calculatePendingAssignments(courses) {
+    return courses.reduce((total, course) => {
+        return total + (course.pendingAssignments || 2); // Default 2 per course
+    }, 0);
+}
+
+function calculateCompletedAssignments(courses) {
+    return courses.reduce((total, course) => {
+        return total + (course.completedAssignments || 0);
+    }, 0);
+}
+
+// Enhanced function to fetch and update user profile
+async function fetchAndUpdateUserProfile() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('❌ No token available for profile fetch');
+            return;
+        }
+
+        console.log('🔄 Fetching fresh user profile...');
+        
+        const response = await fetch('/api/auth/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.user) {
+                console.log('✅ Fresh user profile fetched:', data.user);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                updateUserInfo();
+            }
+        } else {
+            console.log('⚠️ Profile fetch failed, using cached data');
+            updateUserInfo();
+        }
+    } catch (error) {
+        console.error('💥 Error fetching profile:', error);
+        updateUserInfo();
+    }
+}
+// Function to display recent enrolled courses
+function displayRecentCourses(courses) {
+    const recentCoursesEl = document.getElementById('recentCourses');
+    
+    if (!recentCoursesEl) return;
+
+    // Filter enrolled courses
+    const enrolledCourses = courses.filter(course => 
+        course.isEnrolled === true || 
+        course.enrolled === true ||
+        course.enrollmentStatus === 'enrolled'
+    );
+
+    if (enrolledCourses.length === 0) {
+        recentCoursesEl.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #666;">
+                <i class="fas fa-book-open" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                <h3>No Enrolled Courses</h3>
+                <p>You haven't enrolled in any courses yet.</p>
+                <button class="btn btn-primary" onclick="window.location.href='courses.html'" style="margin-top: 15px;">
+                    <i class="fas fa-search"></i> Browse Courses
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    // Show only the first 3 courses
+    const recentCourses = enrolledCourses.slice(0, 3);
+
+    recentCoursesEl.innerHTML = `
+        <div style="display: grid; gap: 15px;">
+            ${recentCourses.map(course => `
+                <div class="course-item" style="display: flex; align-items: center; padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px; background: #f9f9f9; transition: all 0.3s ease;">
+                    <div class="course-icon" style="width: 40px; height: 40px; background: #3f51b5; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                        <i class="fas fa-book" style="color: white;"></i>
+                    </div>
+                    <div class="course-info" style="flex: 1;">
+                        <h4 style="margin: 0 0 5px 0; font-size: 1rem; font-weight: 600;">${course.title || course.name || 'Untitled Course'}</h4>
+                        <p style="margin: 0; font-size: 0.85rem; color: #666;">
+                            ${course.code || 'No Code'} • 
+                            ${course.lecturer?.name || course.lecturerName || 'Unknown Lecturer'} • 
+                            ${course.credits || 3} credits
+                        </p>
+                    </div>
+                    <div class="course-status">
+                        <span style="
+                            padding: 4px 8px; 
+                            border-radius: 12px; 
+                            font-size: 0.75rem; 
+                            font-weight: 500;
+                            background: #e8f5e8; 
+                            color: #2e7d2e;
+                        ">
+                            Enrolled
+                        </span>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        ${enrolledCourses.length > 3 ? `
+            <div style="text-align: center; margin-top: 15px;">
+                <button class="btn btn-outline btn-sm" onclick="window.location.href='courses.html'">
+                    View All ${enrolledCourses.length} Courses
+                </button>
+            </div>
+        ` : ''}
+    `;
+}
+
+// Function to calculate assignments due this week
+function calculateAssignmentsDueThisWeek(courses) {
+    // This is a placeholder - you can enhance this based on your assignment data structure
+    const totalAssignments = courses.reduce((total, course) => {
+        return total + (course.assignmentsCount || 0);
+    }, 0);
+    
+    // For now, return 0 or a calculated value based on your data
+    return Math.floor(totalAssignments * 0.3); // Assuming 30% are due this week
+}
+
+// Function to load student assignments
+async function loadStudentAssignments() {
+    try {
+        const token = localStorage.getItem('token');
+        
+        const response = await fetch('/api/student/assignments', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+                displayUpcomingAssignments(data.assignments || []);
+            }
+        } else {
+            console.log('⚠️ Could not fetch assignments data');
+            displayUpcomingAssignments([]);
+        }
+        
+    } catch (error) {
+        console.error('💥 Error loading assignments:', error);
+        displayUpcomingAssignments([]);
+    }
+}
+
+// Function to display upcoming assignments
+function displayUpcomingAssignments(assignments) {
+    const upcomingAssignmentsEl = document.getElementById('upcomingAssignments');
+    
+    if (!upcomingAssignmentsEl) return;
+
+    if (assignments.length === 0) {
+        upcomingAssignmentsEl.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #666;">
+                <i class="fas fa-tasks" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.3;"></i>
+                <p>No upcoming assignments</p>
+            </div>
+        `;
+        return;
+    }
+
+    upcomingAssignmentsEl.innerHTML = `
+        <div style="display: grid; gap: 10px;">
+            ${assignments.slice(0, 5).map(assignment => `
+                <div class="assignment-item" style="display: flex; align-items: center; padding: 12px; border: 1px solid #e0e0e0; border-radius: 6px;">
+                    <div class="assignment-icon" style="width: 32px; height: 32px; background: #ff9800; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                        <i class="fas fa-file-alt" style="color: white; font-size: 0.85rem;"></i>
+                    </div>
+                    <div class="assignment-info" style="flex: 1;">
+                        <h5 style="margin: 0 0 3px 0; font-size: 0.9rem;">${assignment.title || 'Assignment'}</h5>
+                        <p style="margin: 0; font-size: 0.8rem; color: #666;">
+                            ${assignment.courseName || 'Course'} • Due: ${assignment.dueDate ? new Date(assignment.dueDate).toLocaleDateString() : 'No due date'}
+                        </p>
+                    </div>
+                    <div class="assignment-status" style="font-size: 0.75rem;">
+                        <span style="
+                            padding: 3px 8px; 
+                            border-radius: 10px; 
+                            background: ${assignment.status === 'submitted' ? '#e8f5e8' : '#fff3cd'}; 
+                            color: ${assignment.status === 'submitted' ? '#2e7d2e' : '#856404'};
+                        ">
+                            ${assignment.status === 'submitted' ? 'Submitted' : 'Pending'}
+                        </span>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+// Add this to detect enrollment changes
+window.addEventListener('focus', async function() {
+    // Check if dashboard needs refresh (after enrollment)
+    if (localStorage.getItem('dashboardNeedsRefresh') === 'true') {
+        console.log('🔄 Detected enrollment change, refreshing dashboard...');
+        localStorage.removeItem('dashboardNeedsRefresh');
+        await refreshDashboard();
+    }
+});
+
+// Function to load recent activity
+async function loadRecentActivity() {
+    const recentActivityEl = document.getElementById('recentActivity');
+    
+    if (!recentActivityEl) return;
+
+    // For now, show a placeholder - you can expand this later
+    recentActivityEl.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #666;">
+            <i class="fas fa-clock" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.3;"></i>
+            <p>No recent activity</p>
+        </div>
+    `;
+}
+
+// Function to refresh dashboard data (call this after course enrollment)
+async function refreshDashboard() {
+    console.log('🔄 Refreshing dashboard data...');
+    await loadStudentDashboardData();
+}
+
+        
+    // Enhanced DOMContentLoaded event for student dashboard
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('📄 DOM loaded, initializing student dashboard...');
+
+    // First update user info from cache
+    updateUserInfo();
+
+    // Then try to fetch fresh user profile
+    await fetchAndUpdateUserProfile();
+
+    // Setup logout button
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('studentEnrolledCount');
+            window.location.href = '../../login.html';
+        });
+    }
+
+    // Load dashboard data
+    await loadStudentDashboardData();
+
+    console.log('✅ Student dashboard initialized');
+
+    // Setup auto-refresh every 30 seconds
+    setInterval(async () => {
+        console.log('🔄 Auto-refreshing dashboard...');
+        await refreshDashboard();
+    }, 30000);
+});
+</script>
+    
+    <!-- Socket.io for real-time notifications -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Socket.io connection for real-time updates
+            const socket = io('http://localhost:5000');
+            
+            socket.on('connect', () => {
+                console.log('🔌 Connected to server for real-time updates (dashboard)');
+                
+                // Join student room for role-based notifications
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                if (user.id) {
+                    socket.emit('join-room', { userId: user.id, role: 'student' });
+                }
+            });
+            
+            // Listen for new course notifications
+            socket.on('newCourseCreated', (data) => {
+                console.log('🆕 New course created notification received (dashboard):', data);
+                
+                // Show a visual notification
+                showRealTimeNotification(`New course available: ${data.courseName}`, 'course');
+                
+                // Refresh dashboard stats
+                if (window.studentDashboard && window.studentDashboard.loadDashboard) {
+                    window.studentDashboard.loadDashboard();
+                }
+            });
+            
+            // Listen for general student notifications
+            socket.on('studentNotification', (data) => {
+                console.log('📢 Student notification received (dashboard):', data);
+                
+                // Show a visual notification
+                showRealTimeNotification(data.message, data.type || 'info');
+            });
+            
+            // Function to show real-time notifications
+            function showRealTimeNotification(message, type = 'info') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `real-time-notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-${type === 'course' ? 'book' : 'bell'}"></i>
+                        <span>${message}</span>
+                        <button class="close-notification" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Add styles if not already added
+                if (!document.getElementById('real-time-notification-styles')) {
+                    const styles = document.createElement('style');
+                    styles.id = 'real-time-notification-styles';
+                    styles.textContent = `
+                        .real-time-notification {
+                            position: fixed;
+                            top: 90px;
+                            right: 20px;
+                            background: white;
+                            border-left: 4px solid var(--primary-color);
+                            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+                            border-radius: 8px;
+                            padding: 16px;
+                            max-width: 400px;
+                            z-index: 999999;
+                            animation: slideInRight 0.3s ease-out;
+                            border: 1px solid #e0e0e0;
+                        }
+                        .real-time-notification.course {
+                            border-left-color: #4CAF50;
+                        }
+                        .notification-content {
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                        }
+                        .notification-content i:first-child {
+                            color: var(--primary-color);
+                            font-size: 1.2em;
+                        }
+                        .real-time-notification.course .notification-content i:first-child {
+                            color: #4CAF50;
+                        }
+                        .close-notification {
+                            background: none;
+                            border: none;
+                            color: #999;
+                            cursor: pointer;
+                            padding: 4px;
+                            margin-left: auto;
+                            border-radius: 50%;
+                            width: 24px;
+                            height: 24px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .close-notification:hover {
+                            color: #666;
+                            background-color: #f5f5f5;
+                        }
+                        @keyframes slideInRight {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                    `;
+                    document.head.appendChild(styles);
+                }
+                
+                // Add to page
+                document.body.appendChild(notification);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 5000);
+            }
+            
+            console.log('🔔 Student dashboard loaded - Socket.io enabled');
+        });
+    </script>
+</body>
+</html>
+

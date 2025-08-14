@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation Button Test</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/presentations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="padding: 20px;">
+    <h1>Presentation Button Test</h1>
+    
+    <!-- Create New Presentation Form -->
+    <div class="create-presentation-section" id="createPresentationSection">
+        <div class="section-header">
+            <h3>Create New Presentation</h3>
+            <button class="toggle-btn" id="toggleCreateForm">
+                <i class="fas fa-plus"></i>
+                <span>Add Presentation</span>
+            </button>
+        </div>
+        
+        <div class="create-form" id="createPresentationForm" style="display: none;">
+            <h4>Form content would go here...</h4>
+            <p>This form is now visible!</p>
+            <button type="button" class="btn btn-secondary" id="cancelCreateBtn">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Simple test script without authentication requirements
+        console.log('Test script loaded');
+        
+        // Mock auth object to bypass authentication
+        window.auth = {
+            requireAuth: () => {
+                console.log('Mock auth - returning true');
+                return true;
+            }
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded');
+            
+            const toggleBtn = document.getElementById('toggleCreateForm');
+            const formSection = document.getElementById('createPresentationForm');
+            const cancelBtn = document.getElementById('cancelCreateBtn');
+            
+            console.log('Toggle button:', toggleBtn);
+            console.log('Form section:', formSection);
+            
+            if (toggleBtn && formSection) {
+                toggleBtn.addEventListener('click', () => {
+                    console.log('Toggle button clicked');
+                    const isVisible = formSection.style.display !== 'none';
+                    formSection.style.display = isVisible ? 'none' : 'block';
+                    
+                    const icon = toggleBtn.querySelector('i');
+                    const span = toggleBtn.querySelector('span');
+                    
+                    if (isVisible) {
+                        icon.className = 'fas fa-plus';
+                        span.textContent = 'Add Presentation';
+                    } else {
+                        icon.className = 'fas fa-minus';
+                        span.textContent = 'Cancel';
+                    }
+                });
+                
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', () => {
+                        console.log('Cancel button clicked');
+                        formSection.style.display = 'none';
+                        const icon = toggleBtn.querySelector('i');
+                        const span = toggleBtn.querySelector('span');
+                        icon.className = 'fas fa-plus';
+                        span.textContent = 'Add Presentation';
+                    });
+                }
+                
+                console.log('Event listeners set up successfully');
+            } else {
+                console.error('Required elements not found');
+            }
+        });
+    </script>
+</body>
+</html>

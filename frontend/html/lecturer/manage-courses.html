@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Lecturer</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="manage-courses.html" class="nav-link">
+                        <i class="fas fa-cogs"></i>
+                        <span>Manage Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="evaluation.html" class="nav-link active">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Evaluations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">Manage Courses</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="header-btn" id="logoutBtn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="manage-courses-header">
+                </div>
+
+            <!-- Course Management Tabs -->
+            <div class="course-tabs">
+                <button class="tab-btn active" data-tab="overview">Overview</button>
+                <button class="tab-btn" data-tab="content">Content</button>
+                <button class="tab-btn" data-tab="assignments">Assignments</button>
+                <button class="tab-btn" data-tab="students">Students</button>
+                <button class="tab-btn" data-tab="settings">Settings</button>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                
+            </div>
+
+            <!-- Content Tab -->
+            <div id="content" class="tab-content">
+                <div class="content-header">
+                    <h2>Course Content Management</h2>
+                    <button class="btn" id="addModuleBtn">Add Module</button>
+                </div>
+
+                <div class="course-selector">
+                    <label for="contentCourseSelect">Select Course:</label>
+                    <select id="contentCourseSelect">
+                        <option value="cs101">Computer Science I</option>
+                        <option value="ds101">Data Structures</option>
+                        <option value="ap101">Advanced Programming</option>
+                    </select>
+                </div>
+
+                <div class="content-modules">
+                    <div class="module">
+                        <div class="module-header">
+                            <h3>Module 1: Introduction to Programming</h3>
+                            <div class="module-actions">
+                                <button class="btn btn-secondary btn-small">Edit</button>
+                                <button class="btn btn-secondary btn-small">Delete</button>
+                            </div>
+                        </div>
+                        <div class="module-content">
+                            <div class="lesson">
+                                <div class="lesson-info">
+                                    <h4>Lesson 1.1: Programming Basics</h4>
+                                    <p>Video • 15 minutes</p>
+                                </div>
+                                <div class="lesson-actions">
+                                    <button class="btn btn-small">Edit</button>
+                                </div>
+                            </div>
+                            <div class="lesson">
+                                <div class="lesson-info">
+                                    <h4>Lesson 1.2: Variables and Data Types</h4>
+                                    <p>Interactive • 20 minutes</p>
+                                </div>
+                                <div class="lesson-actions">
+                                    <button class="btn btn-small">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary add-lesson">Add Lesson</button>
+                    </div>
+
+                    <div class="module">
+                        <div class="module-header">
+                            <h3>Module 2: Control Structures</h3>
+                            <div class="module-actions">
+                                <button class="btn btn-secondary btn-small">Edit</button>
+                                <button class="btn btn-secondary btn-small">Delete</button>
+                            </div>
+                        </div>
+                        <div class="module-content">
+                            <div class="lesson">
+                                <div class="lesson-info">
+                                    <h4>Lesson 2.1: Conditional Statements</h4>
+                                    <p>Video • 18 minutes</p>
+                                </div>
+                                <div class="lesson-actions">
+                                    <button class="btn btn-small">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary add-lesson">Add Lesson</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignments Tab -->
+            <div id="assignments" class="tab-content">
+                <div class="assignments-header">
+                    <h2>Assignment Management</h2>
+                    <button class="btn" id="createAssignmentBtn">Create Assignment</button>
+                </div>
+
+                <div class="course-selector">
+                    <label for="assignmentCourseSelect">Select Course:</label>
+                    <select id="assignmentCourseSelect">
+                        <option value="cs101">Computer Science I</option>
+                        <option value="ds101">Data Structures</option>
+                        <option value="ap101">Advanced Programming</option>
+                    </select>
+                </div>
+
+                <div class="assignments-list">
+                    <div class="assignment-item">
+                        <div class="assignment-info">
+                            <h3>Programming Assignment 1</h3>
+                            <p>Basic programming concepts and syntax</p>
+                            <div class="assignment-meta">
+                                <span>Due: January 15, 2025</span>
+                                <span>Submissions: 35/45</span>
+                                <span>Status: Active</span>
+                            </div>
+                        </div>
+                        <div class="assignment-actions">
+                            <button class="btn" onclick="gradeAssignment('pa1')">Grade (10 pending)</button>
+                            <button class="btn btn-secondary" onclick="editAssignment('pa1')">Edit</button>
+                            <button class="btn btn-secondary" onclick="viewSubmissions('pa1')">View Submissions</button>
+                        </div>
+                    </div>
+
+                    <div class="assignment-item">
+                        <div class="assignment-info">
+                            <h3>Quiz 1: Variables and Data Types</h3>
+                            <p>Multiple choice quiz on basic concepts</p>
+                            <div class="assignment-meta">
+                                <span>Due: January 12, 2025</span>
+                                <span>Submissions: 42/45</span>
+                                <span>Status: Active</span>
+                            </div>
+                        </div>
+                        <div class="assignment-actions">
+                            <button class="btn" onclick="gradeAssignment('q1')">Grade (3 pending)</button>
+                            <button class="btn btn-secondary" onclick="editAssignment('q1')">Edit</button>
+                            <button class="btn btn-secondary" onclick="viewSubmissions('q1')">View Submissions</button>
+                        </div>
+                    </div>
+
+                    <div class="assignment-item">
+                        <div class="assignment-info">
+                            <h3>Project 1: Simple Calculator</h3>
+                            <p>Create a calculator application using basic programming concepts</p>
+                            <div class="assignment-meta">
+                                <span>Due: January 20, 2025</span>
+                                <span>Submissions: 0/45</span>
+                                <span>Status: Draft</span>
+                            </div>
+                        </div>
+                        <div class="assignment-actions">
+                            <button class="btn" onclick="publishAssignment('p1')">Publish</button>
+                            <button class="btn btn-secondary" onclick="editAssignment('p1')">Edit</button>
+                            <button class="btn btn-secondary" onclick="previewAssignment('p1')">Preview</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Tab -->
+            <div id="students" class="tab-content">
+                <div class="students-header">
+                    <h2>Student Management</h2>
+                    <div class="students-actions">
+                        <button class="btn" id="enrollStudentBtn">Enroll Student</button>
+                        <button class="btn btn-secondary" id="exportStudentsBtn">Export List</button>
+                    </div>
+                </div>
+
+                <div class="course-selector">
+                    <label for="studentsCourseSelect">Select Course:</label>
+                    <select id="studentsCourseSelect">
+                        <option value="cs101">Computer Science I</option>
+                        <option value="ds101">Data Structures</option>
+                        <option value="ap101">Advanced Programming</option>
+                    </select>
+                </div>
+
+                <div class="students-filters">
+                    <input type="text" id="studentSearch" placeholder="Search students...">
+                    <select id="studentStatusFilter">
+                        <option value="">All Students</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="students-table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Email</th>
+                                <th>Progress</th>
+                                <th>Grade</th>
+                                <th>Last Activity</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <tr>
+                                <td>John Doe</td>
+                                <td>john.doe@academia.edu</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 78%"></div>
+                                    </div>
+                                    <span>78%</span>
+                                </td>
+                                <td>A-</td>
+                                <td>2 hours ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="viewStudentDetails('1')">View</button>
+                                    <button class="btn btn-secondary btn-small" onclick="messageStudent('1')">Message</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jane Smith</td>
+                                <td>jane.smith@academia.edu</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 85%"></div>
+                                    </div>
+                                    <span>85%</span>
+                                </td>
+                                <td>A</td>
+                                <td>1 hour ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="viewStudentDetails('2')">View</button>
+                                    <button class="btn btn-secondary btn-small" onclick="messageStudent('2')">Message</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="settings-header">
+                    <h2>Course Settings</h2>
+                </div>
+
+                <div class="course-selector">
+                    <label for="settingsCourseSelect">Select Course:</label>
+                    <select id="settingsCourseSelect">
+                        <option value="cs101">Computer Science I</option>
+                        <option value="ds101">Data Structures</option>
+                        <option value="ap101">Advanced Programming</option>
+                    </select>
+                </div>
+
+                <div class="settings-sections">
+                    <div class="settings-section">
+                        <h3>General Settings</h3>
+                        <div class="setting-item">
+                            <label for="courseName">Course Name</label>
+                            <input type="text" id="courseName" value="Computer Science I">
+                        </div>
+                        <div class="setting-item">
+                            <label for="courseDescription">Description</label>
+                            <textarea id="courseDescription" rows="3">Introduction to computer science fundamentals</textarea>
+                        </div>
+                        <div class="setting-item">
+                            <label for="courseVisibility">Visibility</label>
+                            <select id="courseVisibility">
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                                <option value="draft">Draft</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Enrollment Settings</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="openEnrollment" checked>
+                                Allow open enrollment
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="maxStudents">Maximum Students</label>
+                            <input type="number" id="maxStudents" value="50">
+                        </div>
+                        <div class="setting-item">
+                            <label for="enrollmentDeadline">Enrollment Deadline</label>
+                            <input type="date" id="enrollmentDeadline" value="2025-02-01">
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Grading Settings</h3>
+                        <div class="setting-item">
+                            <label for="gradingScale">Grading Scale</label>
+                            <select id="gradingScale">
+                                <option value="letter">Letter Grades (A-F)</option>
+                                <option value="percentage">Percentage (0-100)</option>
+                                <option value="points">Points Based</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="passingGrade">Passing Grade</label>
+                            <input type="text" id="passingGrade" value="D">
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn" id="saveSettingsBtn">Save Settings</button>
+                        <button class="btn btn-secondary" id="resetSettingsBtn">Reset to Default</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/lecturer-navigation.js"></script>
+    <script src="../../js/lecturer-manage-courses.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeManageCourses();
+            bindEvents();
+        });
+
+        function initializeManageCourses() {
+            // Load course data
+            loadCourseData();
+        }
+
+        function bindEvents() {
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+
+            // Course selectors
+            document.querySelectorAll('select[id$="CourseSelect"]').forEach(select => {
+                select.addEventListener('change', function() {
+                    loadCourseSpecificData(this.id, this.value);
+                });
+            });
+
+            // Action buttons
+            document.getElementById('addModuleBtn').addEventListener('click', addModule);
+            document.getElementById('createAssignmentBtn').addEventListener('click', createAssignment);
+            document.getElementById('enrollStudentBtn').addEventListener('click', enrollStudent);
+            document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+        }
+
+        function switchTab(tabName) {
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Show corresponding content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            // Load tab-specific data
+            loadTabData(tabName);
+        }
+
+        function loadTabData(tabName) {
+            switch(tabName) {
+                case 'content':
+                    loadContentData();
+                    break;
+                case 'assignments':
+                    loadAssignmentsData();
+                    break;
+                case 'students':
+                    loadStudentsData();
+                    break;
+                case 'settings':
+                    loadSettingsData();
+                    break;
+            }
+        }
+
+        function loadCourseData() {
+            // This would typically load from API
+            console.log('Loading course data...');
+        }
+
+        function loadContentData() {
+            console.log('Loading content data...');
+        }
+
+        function loadAssignmentsData() {
+            console.log('Loading assignments data...');
+        }
+
+        function loadStudentsData() {
+            console.log('Loading students data...');
+        }
+
+        function loadSettingsData() {
+            console.log('Loading settings data...');
+        }
+
+        function loadCourseSpecificData(selectId, courseId) {
+            console.log(`Loading data for ${courseId} in ${selectId}`);
+        }
+
+        function manageCourse(courseId) {
+            // Switch to content tab and load course
+            switchTab('content');
+            document.getElementById('contentCourseSelect').value = courseId;
+            loadCourseSpecificData('contentCourseSelect', courseId);
+        }
+
+        function editCourse(courseId) {
+            // Switch to settings tab and load course
+            switchTab('settings');
+            document.getElementById('settingsCourseSelect').value = courseId;
+            loadCourseSpecificData('settingsCourseSelect', courseId);
+        }
+
+        function publishCourse(courseId) {
+            if (confirm('Are you sure you want to publish this course?')) {
+                // API call to publish course
+                showAlert('Course published successfully!', 'success');
+            }
+        }
+
+        function addModule() {
+            // This would open an add module modal
+            alert('Add module functionality would be implemented here');
+        }
+
+        function createAssignment() {
+            // This would open a create assignment modal
+            alert('Create assignment functionality would be implemented here');
+        }
+
+        function enrollStudent() {
+            // This would open an enroll student modal
+            alert('Enroll student functionality would be implemented here');
+        }
+
+        function saveSettings() {
+            // Gather all settings and save
+            showAlert('Settings saved successfully!', 'success');
+        }
+
+        function gradeAssignment(assignmentId) {
+            window.location.href = `evaluation.html?assignment=${assignmentId}`;
+        }
+
+        function viewSubmissions(assignmentId) {
+            alert(`View submissions for assignment ${assignmentId}`);
+        }
+
+        function viewStudentDetails(studentId) {
+            alert(`View details for student ${studentId}`);
+        }
+
+        function messageStudent(studentId) {
+            alert(`Send message to student ${studentId}`);
+        }
+
+        function showAlert(message, type = 'info') {
+            // Remove existing alerts
+            const existingAlert = document.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create new alert
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+
+            // Insert alert at the top of main content
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.insertBefore(alert, mainContent.firstChild);
+            }
+
+            // Auto-remove alert after 3 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 3000);
+        }
+
+        // Custom styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .course-tabs {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 30px;
+                border-bottom: 1px solid #eee;
+            }
+
+            .tab-btn {
+                padding: 15px 20px;
+                border: none;
+                background: none;
+                cursor: pointer;
+                border-bottom: 3px solid transparent;
+                transition: all 0.3s;
+            }
+
+            .tab-btn.active {
+                border-bottom-color: #3498db;
+                color: #3498db;
+            }
+
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.active {
+                display: block;
+            }
+
+            .courses-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+            }
+
+            .course-card {
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                padding: 20px;
+            }
+
+            .course-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+
+            .course-status {
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .course-status.active {
+                background: #27ae60;
+                color: white;
+            }
+
+            .course-status.draft {
+                background: #f39c12;
+                color: white;
+            }
+
+            .course-stats {
+                display: flex;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+
+            .stat {
+                text-align: center;
+            }
+
+            .stat-value {
+                display: block;
+                font-size: 18px;
+                font-weight: bold;
+                color: #3498db;
+            }
+
+            .stat-label {
+                font-size: 12px;
+                color: #666;
+            }
+
+            .course-actions {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .course-selector {
+                margin-bottom: 30px;
+            }
+
+            .course-selector label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .course-selector select {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                min-width: 200px;
+            }
+
+            .module {
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+
+            .module-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                background: #f8f9fa;
+                border-bottom: 1px solid #eee;
+            }
+
+            .module-actions {
+                display: flex;
+                gap: 10px;
+            }
+
+            .module-content {
+                padding: 20px;
+            }
+
+            .lesson {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 0;
+                border-bottom: 1px solid #eee;
+            }
+
+            .lesson:last-child {
+                border-bottom: none;
+            }
+
+            .lesson-info h4 {
+                margin-bottom: 5px;
+                color: #2c3e50;
+            }
+
+            .lesson-info p {
+                color: #666;
+                font-size: 14px;
+            }
+
+            .add-lesson {
+                margin: 20px;
+                width: calc(100% - 40px);
+            }
+
+            .assignment-item {
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                padding: 20px;
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .assignment-info {
+                flex: 1;
+            }
+
+            .assignment-info h3 {
+                margin-bottom: 10px;
+                color: #2c3e50;
+            }
+
+            .assignment-info p {
+                margin-bottom: 10px;
+                color: #666;
+            }
+
+            .assignment-meta {
+                display: flex;
+                gap: 20px;
+                font-size: 14px;
+                color: #999;
+            }
+
+            .assignment-actions {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .students-filters {
+                display: flex;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+
+            .students-filters input,
+            .students-filters select {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            .status-badge {
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .status-badge.active {
+                background: #27ae60;
+                color: white;
+            }
+
+            .settings-sections {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .settings-section {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .settings-section h3 {
+                margin-bottom: 20px;
+                color: #2c3e50;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+            }
+
+            .setting-item {
+                margin-bottom: 20px;
+            }
+
+            .setting-item label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #555;
+            }
+
+            .setting-item input,
+            .setting-item select,
+            .setting-item textarea {
+                width: 100%;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+            .setting-item input[type="checkbox"] {
+                width: auto;
+                margin-right: 8px;
+            }
+
+            .settings-actions {
+                display: flex;
+                gap: 15px;
+                margin-top: 30px;
+            }
+
+            .btn-small {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            @media (max-width: 768px) {
+                .course-tabs {
+                    flex-wrap: wrap;
+                }
+
+                .courses-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .assignment-item {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 15px;
+                }
+
+                .assignment-meta {
+                    flex-direction: column;
+                    gap: 5px;
+                }
+
+                .students-filters {
+                    flex-direction: column;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

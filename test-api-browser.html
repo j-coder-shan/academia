@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Course API Test</h1>
+    <button onclick="testCourseAPI()">Test Course Creation</button>
+    <div id="output"></div>
+
+    <script>
+        // Test course creation API directly 
+        async function testCourseAPI() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<p>Testing in progress...</p>';
+            
+            const apiUrl = 'http://localhost:5000/api';
+            
+            try {
+                // First, let's try to register a test lecturer
+                console.log('1. Attempting to register a test lecturer...');
+                output.innerHTML += '<p>1. Attempting to register a test lecturer...</p>';
+                
+                const registerResponse = await fetch(`${apiUrl}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: 'LEC001',
+                        name: 'Test Lecturer',
+                        email: 'lecturer@test.com',
+                        password: 'testpass123',
+                        role: 'lecturer',
+                        phone: '1234567890',
+                        address: 'Test Address'
+                    })
+                });
+                
+                let registerResult = await registerResponse.json();
+                console.log('Register response:', registerResult);
+                output.innerHTML += `<p>Register response: ${JSON.stringify(registerResult)}</p>`;
+                
+                // If registration fails because user exists, try to login instead
+                let token;
+                if (!registerResponse.ok && registerResult.message?.includes('exists')) {
+                    console.log('2. User exists, attempting login...');
+                    output.innerHTML += '<p>2. User exists, attempting login...</p>';
+                    
+                    const loginResponse = await fetch(`${apiUrl}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            loginId: 'LEC001',
+                            password: 'testpass123'
+                        })
+                    });
+                    
+                    const loginResult = await loginResponse.json();
+                    console.log('Login response:', loginResult);
+                    output.innerHTML += `<p>Login response: ${JSON.stringify(loginResult)}</p>`;
+                    
+                    if (loginResponse.ok) {
+                        token = loginResult.token;
+                    }
+                } else if (registerResponse.ok) {
+                    token = registerResult.token;
+                }
+                
+                if (!token) {
+                    console.error('Failed to get authentication token');
+                    output.innerHTML += '<p>❌ Failed to get authentication token</p>';
+                    return;
+                }
+                
+                console.log('3. Got authentication token, testing course creation...');
+                output.innerHTML += '<p>3. Got authentication token, testing course creation...</p>';
+                
+                // Now test course creation
+                const courseData = {
+                    title: "Test API Course",
+                    description: "This is a test course created via API",
+                    code: "API101",
+                    category: "Computer Science",
+                    level: "Beginner",
+                    credits: "3",
+                    startDate: "2024-02-01",
+                    endDate: "2024-05-31",
+                    maxStudents: "25",
+                    schedule: [{
+                        day: "Monday",
+                        startTime: "10:00",
+                        endTime: "12:00",
+                        type: "lecture"
+                    }],
+                    grading: {
+                        assignments: 30,
+                        midterm: 25,
+                        final: 35,
+                        presentations: 10
+                    }
+                };
+                
+                const courseResponse = await fetch(`${apiUrl}/lecturer/courses`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(courseData)
+                });
+                
+                const courseResult = await courseResponse.json();
+                console.log('Course creation response status:', courseResponse.status);
+                console.log('Course creation response:', JSON.stringify(courseResult, null, 2));
+                
+                output.innerHTML += `<p>Course creation status: ${courseResponse.status}</p>`;
+                output.innerHTML += `<p>Course creation response: <pre>${JSON.stringify(courseResult, null, 2)}</pre></p>`;
+                
+                if (courseResponse.ok) {
+                    console.log('✅ Course created successfully!');
+                    output.innerHTML += '<p>✅ Course created successfully!</p>';
+                } else {
+                    console.log('❌ Course creation failed');
+                    output.innerHTML += '<p>❌ Course creation failed</p>';
+                }
+                
+            } catch (error) {
+                console.error('Test error:', error);
+                output.innerHTML += `<p>Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

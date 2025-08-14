@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation Form Test</title>
+    <link rel="stylesheet" href="frontend/css/dashboard.css">
+    <link rel="stylesheet" href="frontend/css/presentations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        
+        .create-presentation-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .toggle-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-btn:hover {
+            background: #218838;
+        }
+        
+        .create-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .form-section {
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .debug-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .success {
+            color: #28a745;
+        }
+        
+        .error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>Presentation Form Test</h1>
+    
+    <div class="create-presentation-section">
+        <div class="section-header">
+            <h3>Create New Presentation</h3>
+            <button class="toggle-btn" id="toggleCreateForm">
+                <i class="fas fa-plus"></i>
+                <span>Add Presentation</span>
+            </button>
+        </div>
+        
+        <div class="create-form" id="createPresentationForm" style="display: none;">
+            <form id="newPresentationForm">
+                <div class="form-section">
+                    <h4>Basic Information</h4>
+                    <div class="form-group">
+                        <label for="presentationTitle">Title *</label>
+                        <input type="text" id="presentationTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="presentationCourse">Course *</label>
+                        <select id="presentationCourse" name="course" required>
+                            <option value="">Select a course</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="presentationType">Type *</label>
+                        <select id="presentationType" name="type" required>
+                            <option value="">Select type</option>
+                            <option value="individual">Individual</option>
+                            <option value="group">Group</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="presentationDuration">Duration (minutes) *</label>
+                        <input type="number" id="presentationDuration" name="duration" min="5" max="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="presentationDescription">Description *</label>
+                        <textarea id="presentationDescription" name="description" rows="3" required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <button type="submit" class="btn btn-primary" id="createPresentationBtn">Create Presentation</button>
+                    <button type="button" class="btn btn-secondary" id="cancelCreateBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="debug-info" id="debugInfo">
+        <h4>Debug Information</h4>
+        <div id="debugLog"></div>
+    </div>
+
+    <script src="frontend/js/auth.js"></script>
+    <script>
+        // Debug logging
+        function debugLog(message) {
+            const debugDiv = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            debugDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+        }
+        
+        // Simplified auth check
+        window.simpleAuth = {
+            requireAuth: function() {
+                // For testing, we'll just check if there's a token
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    // Set a test token
+                    localStorage.setItem('authToken', 'test-token-123');
+                    localStorage.setItem('userName', 'Test Lecturer');
+                    localStorage.setItem('userRole', 'lecturer');
+                    debugLog('✓ Set test authentication');
+                    return true;
+                }
+                return true;
+            }
+        };
+        
+        // Test presentation creation class
+        class TestPresentationCreator {
+            constructor() {
+                this.apiBaseUrl = 'http://localhost:5000';
+                this.init();
+            }
+            
+            init() {
+                debugLog('Initializing test presentation creator...');
+                this.setupEventListeners();
+                this.loadCourses();
+            }
+            
+            setupEventListeners() {
+                const toggleBtn = document.getElementById('toggleCreateForm');
+                const form = document.getElementById('newPresentationForm');
+                const cancelBtn = document.getElementById('cancelCreateBtn');
+                
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', () => {
+                        debugLog('Toggle button clicked');
+                        this.toggleCreateForm();
+                    });
+                    debugLog('✓ Toggle button event listener added');
+                } else {
+                    debugLog('✗ Toggle button not found');
+                }
+                
+                if (form) {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        debugLog('Form submitted');
+                        this.handleCreatePresentation(e);
+                    });
+                    debugLog('✓ Form submit event listener added');
+                } else {
+                    debugLog('✗ Form not found');
+                }
+                
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', () => {
+                        debugLog('Cancel button clicked');
+                        this.toggleCreateForm();
+                    });
+                    debugLog('✓ Cancel button event listener added');
+                } else {
+                    debugLog('✗ Cancel button not found');
+                }
+            }
+            
+            toggleCreateForm() {
+                const formSection = document.getElementById('createPresentationForm');
+                const toggleBtn = document.getElementById('toggleCreateForm');
+                
+                if (formSection && toggleBtn) {
+                    const isVisible = formSection.style.display !== 'none';
+                    formSection.style.display = isVisible ? 'none' : 'block';
+                    
+                    const icon = toggleBtn.querySelector('i');
+                    const span = toggleBtn.querySelector('span');
+                    
+                    if (isVisible) {
+                        icon.className = 'fas fa-plus';
+                        span.textContent = 'Add Presentation';
+                        debugLog('✓ Form hidden');
+                    } else {
+                        icon.className = 'fas fa-minus';
+                        span.textContent = 'Cancel';
+                        debugLog('✓ Form shown');
+                    }
+                } else {
+                    debugLog('✗ Form section or toggle button not found');
+                }
+            }
+            
+            async loadCourses() {
+                try {
+                    debugLog('Loading courses...');
+                    const token = localStorage.getItem('authToken');
+                    
+                    const response = await fetch(`${this.apiBaseUrl}/api/courses`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const courses = data.courses || [];
+                        debugLog(`✓ Loaded ${courses.length} courses`);
+                        
+                        const courseSelect = document.getElementById('presentationCourse');
+                        if (courseSelect) {
+                            courseSelect.innerHTML = '<option value="">Select a course</option>';
+                            courses.forEach(course => {
+                                const option = document.createElement('option');
+                                option.value = course._id;
+                                option.textContent = `${course.code} - ${course.name}`;
+                                courseSelect.appendChild(option);
+                            });
+                            debugLog('✓ Course options populated');
+                        }
+                    } else {
+                        debugLog(`✗ Failed to load courses: ${response.status}`);
+                    }
+                } catch (error) {
+                    debugLog(`✗ Error loading courses: ${error.message}`);
+                }
+            }
+            
+            async handleCreatePresentation(event) {
+                try {
+                    debugLog('Starting presentation creation...');
+                    const formData = new FormData(event.target);
+                    const presentationData = {
+                        title: formData.get('title'),
+                        description: formData.get('description'),
+                        course: formData.get('course'),
+                        type: formData.get('type'),
+                        duration: parseInt(formData.get('duration')),
+                        schedule: {
+                            assignedDate: new Date().toISOString(),
+                            dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+                        },
+                        grading: {
+                            maxScore: 100,
+                            weightage: 20
+                        },
+                        notificationMode: 'enrolled',
+                        status: 'published'
+                    };
+                    
+                    debugLog('Presentation data: ' + JSON.stringify(presentationData, null, 2));
+                    
+                    const token = localStorage.getItem('authToken');
+                    const response = await fetch(`${this.apiBaseUrl}/api/presentations`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(presentationData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        debugLog('✓ Presentation created successfully!');
+                        debugLog('Response: ' + JSON.stringify(result, null, 2));
+                        this.toggleCreateForm();
+                        event.target.reset();
+                    } else {
+                        debugLog(`✗ Failed to create presentation: ${result.message}`);
+                    }
+                } catch (error) {
+                    debugLog(`✗ Error creating presentation: ${error.message}`);
+                }
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            debugLog('Page loaded');
+            new TestPresentationCreator();
+        });
+    </script>
+</body>
+</html>

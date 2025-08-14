@@ -1,0 +1,26 @@
+{
+  "name": "academia-webrtc-server",
+  "version": "1.0.0",
+  "description": "WebRTC Signaling Server for Academia LMS",
+  "main": "webrtc-server.js",
+  "scripts": {
+    "start": "node webrtc-server.js",
+    "dev": "nodemon webrtc-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "webrtc",
+    "signaling",
+    "video-conference",
+    "socket.io"
+  ],
+  "author": "Academia LMS",
+  "license": "MIT"
+}

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - Academia LMS</title>
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .calendar-nav {
+            display: flex;
+            gap: 15px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .calendar-day-header {
+            text-align: center;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .calendar-day {
+            background-color: white;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 100px;
+            position: relative;
+        }
+        .calendar-day.empty {
+            background-color: #f5f7fa;
+            box-shadow: none;
+        }
+        .day-number {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .event {
+            background-color: #e3f2fd;
+            border-left: 3px solid #3498db;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 14px;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .event:hover {
+            background-color: #bbdefb;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        .today {
+            background-color: #e8f4fc;
+            border: 2px solid #3498db;
+        }
+        .event-indicator {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 8px;
+            height: 8px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: none;
+        }
+        .calendar-day.has-events .event-indicator {
+            display: block;
+        }
+        /* Enhanced User Info Styling */
+.user-info {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+    margin: 10px 0 5px 0;
+    text-transform: capitalize;
+}
+
+.user-role {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 1.5rem;
+    color: white;
+}
+        @media (max-width: 768px) {
+            .calendar-day-header {
+                font-size: 12px;
+                padding: 5px;
+            }
+            .day-number {
+                font-size: 14px;
+            }
+            .calendar-day {
+                min-height: 70px;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Academia LMS</h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role">Lecturer</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="courses.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="manage-courses.html" class="nav-link">
+                        <i class="fas fa-cogs"></i>
+                        <span>Manage Courses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="presentations.html" class="nav-link">
+                        <i class="fas fa-tv"></i>
+                        <span>Presentations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="assignments.html" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="evaluation.html" class="nav-link active">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Evaluations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="calendar.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendar</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2 class="header-title">Calendar</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="header-btn" id="logoutBtn2" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="container">
+        <div class="header">
+            <h1>Event Calendar</h1>
+            <button id="addEventBtn">Add Event</button>
+        </div>
+
+        <div class="calendar-header">
+            <h2 id="current-month-year">Month Year</h2>
+            <div class="calendar-nav">
+                <button id="prev-month">Previous</button>
+                <button id="today-btn">Today</button>
+                <button id="next-month">Next</button>
+            </div>
+        </div>
+
+        <div class="calendar" id="calendar">
+            <div class="calendar-day-header">Sunday</div>
+            <div class="calendar-day-header">Monday</div>
+            <div class="calendar-day-header">Tuesday</div>
+            <div class="calendar-day-header">Wednesday</div>
+            <div class="calendar-day-header">Thursday</div>
+            <div class="calendar-day-header">Friday</div>
+            <div class="calendar-day-header">Saturday</div>
+
+            <!-- Calendar days will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Add/Edit Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Event</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="eventForm">
+                <input type="hidden" id="eventId">
+                <div class="form-group">
+                    <label for="eventTitle">Event Title</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Date</label>
+                    <input type="date" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <textarea id="eventDescription"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="delete-btn" id="deleteBtn">Delete</button>
+                    <button type="button" id="cancelBtn">Cancel</button>
+                    <button type="submit" id="saveBtn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        </main>
+
+        <!-- Create Event Modal -->
+        <div id="createEventModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Event</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="createEventForm">
+                        <div class="form-group">
+                            <label for="eventTitle">Event Title</label>
+                            <input type="text" id="eventTitle" required placeholder="Enter event title">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventType">Event Type</label>
+                            <select id="eventType" required>
+                                <option value="">Select type</option>
+                                <option value="lecture">Lecture</option>
+                                <option value="assignment">Assignment Due</option>
+                                <option value="presentation">Presentation</option>
+                                <option value="exam">Exam</option>
+                                <option value="meeting">Meeting</option>
+                                <option value="office-hours">Office Hours</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventCourse">Related Course (Optional)</label>
+                            <select id="eventCourse">
+                                <option value="">Select course</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Description</label>
+                            <textarea id="eventDescription" rows="3" placeholder="Enter event description"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventDate">Date</label>
+                                <input type="date" id="eventDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventStartTime">Start Time</label>
+                                <input type="time" id="eventStartTime" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventEndTime">End Time</label>
+                                <input type="time" id="eventEndTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventLocation">Location</label>
+                                <input type="text" id="eventLocation" placeholder="Room/Location">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="notifyStudents">
+                                <input type="checkbox" id="notifyStudents">
+                                Notify enrolled students
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="saveEventBtn">Create Event</button>
+                    <button class="btn btn-secondary" id="cancelEventBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Details Modal -->
+        <div id="eventDetailsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="eventDetailsTitle">Event Details</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="event-details">
+                        <div class="detail-item">
+                            <label>Type:</label>
+                            <span id="eventDetailsType"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Course:</label>
+                            <span id="eventDetailsCourse"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Date:</label>
+                            <span id="eventDetailsDate"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Time:</label>
+                            <span id="eventDetailsTime"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Location:</label>
+                            <span id="eventDetailsLocation"></span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Description:</label>
+                            <p id="eventDetailsDescription"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="editEventBtn">Edit Event</button>
+                    <button class="btn btn-danger" id="deleteEventBtn">Delete Event</button>
+                    <button class="btn btn-secondary" id="closeEventDetailsBtn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/lecturer-navigation.js"></script>
+    <script src="../../js/lecturer-calendar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Current date and month display
+            let currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
+            
+            // Events storage
+            let events = JSON.parse(localStorage.getItem('calendarEvents')) || [];
+            let activeEventId = null;
+            
+            // DOM elements
+            const calendarEl = document.getElementById('calendar');
+            const currentMonthYearEl = document.getElementById('current-month-year');
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+            const todayBtn = document.getElementById('today-btn');
+            const addEventBtn = document.getElementById('addEventBtn');
+            const eventModal = document.getElementById('eventModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const eventForm = document.getElementById('eventForm');
+            const eventTitleEl = document.getElementById('eventTitle');
+            const eventDateEl = document.getElementById('eventDate');
+            const eventDescriptionEl = document.getElementById('eventDescription');
+            const eventIdEl = document.getElementById('eventId');
+            const saveBtn = document.getElementById('saveBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
+            const modalTitleEl = document.getElementById('modal-title');
+            
+            // Initialize calendar
+            function renderCalendar() {
+                // Clear previous days (except headers)
+                while (calendarEl.children.length > 7) {
+                    calendarEl.removeChild(calendarEl.lastChild);
+                }
+                
+                const firstDay = new Date(currentYear, currentMonth, 1);
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                const startingDay = firstDay.getDay();
+                
+                // Update month and year display
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                                    "July", "August", "September", "October", "November", "December"];
+                currentMonthYearEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+                
+                // Add empty cells for days from previous month
+                for (let i = 0; i < startingDay; i++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day empty';
+                    calendarEl.appendChild(dayElement);
+                }
+                
+                // Add cells for current month days
+                const today = new Date();
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    // Check if this date is today
+                    const dayDate = new Date(currentYear, currentMonth, i);
+                    if (dayDate.toDateString() === today.toDateString()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    // Check for events on this day
+                    const dayEvents = getEventsForDay(dayDate);
+                    if (dayEvents.length > 0) {
+                        dayElement.classList.add('has-events');
+                    }
+                    
+                    dayElement.innerHTML = `
+                        <div class="day-number">${i}</div>
+                        ${dayEvents.map(event => `
+                            <div class="event" data-id="${event.id}">
+                                ${event.title}
+                            </div>
+                        `).join('')}
+                        <div class="event-indicator"></div>
+                    `;
+                    
+                    // Add click event to day cell
+                    dayElement.addEventListener('click', function() {
+                        // Only trigger if not clicking on an event (events have their own click handler)
+                        if (!event.target.classList.contains('event')) {
+                            const dateString = formatDate(dayDate);
+                            openAddEventModal(null, dateString);
+                        }
+                    });
+                    
+                    calendarEl.appendChild(dayElement);
+                }
+                
+                // Add event listeners to all event elements
+                document.querySelectorAll('.event').forEach(eventEl => {
+                    eventEl.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const eventId = this.getAttribute('data-id');
+                        const event = events.find(ev => ev.id === eventId);
+                        if (event) {
+                            openEditEventModal(event);
+                        }
+                    });
+                });
+            }
+            
+            // Get events for a specific day
+            function getEventsForDay(date) {
+                const dateString = formatDate(date);
+                return events.filter(event => event.date === dateString);
+            }
+            
+            // Format date as YYYY-MM-DD
+            function formatDate(date) {
+                const d = new Date(date);
+                let month = '' + (d.getMonth() + 1);
+                let day = '' + d.getDate();
+                const year = d.getFullYear();
+                
+                if (month.length < 2) 
+                    month = '0' + month;
+                if (day.length < 2) 
+                    day = '0' + day;
+                
+                return [year, month, day].join('-');
+            }
+            
+            // Open modal to add a new event
+            function openAddEventModal(eventId = null, presetDate = null) {
+                activeEventId = eventId;
+                const today = new Date();
+                const todayString = formatDate(today);
+                
+                eventTitleEl.value = '';
+                eventDescriptionEl.value = '';
+                eventDateEl.value = presetDate || todayString;
+                eventIdEl.value = eventId || generateId();
+                
+                deleteBtn.style.display = eventId ? 'block' : 'none';
+                modalTitleEl.textContent = eventId ? 'Edit Event' : 'Add Event';
+                eventModal.style.display = 'flex';
+            }
+            
+            // Open modal to edit an existing event
+            function openEditEventModal(event) {
+                eventTitleEl.value = event.title;
+                eventDescriptionEl.value = event.description || '';
+                eventDateEl.value = event.date;
+                eventIdEl.value = event.id;
+                
+                deleteBtn.style.display = 'block';
+                modalTitleEl.textContent = 'Edit Event';
+                eventModal.style.display = 'flex';
+            }
+            
+            // Generate unique ID for events
+            function generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+            
+            // Event Handlers
+            prevMonthBtn.addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar();
+            });
+            
+            nextMonthBtn.addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar();
+            });
+            
+            todayBtn.addEventListener('click', function() {
+                currentDate = new Date();
+                currentMonth = currentDate.getMonth();
+                currentYear = currentDate.getFullYear();
+                renderCalendar();
+            });
+            
+            addEventBtn.addEventListener('click', function() {
+                openAddEventModal();
+            });
+            
+            closeModalBtn.addEventListener('click', function() {
+                eventModal.style.display = 'none';
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                eventModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside the modal content
+            window.addEventListener('click', function(event) {
+                if (event.target === eventModal) {
+                    eventModal.style.display = 'none';
+                }
+            });
+            
+            eventForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const event = {
+                    id: eventIdEl.value,
+                    title: eventTitleEl.value.trim(),
+                    date: eventDateEl.value,
+                    description: eventDescriptionEl.value.trim()
+                };
+                
+                // Update or add the event
+                const existingIndex = events.findIndex(ev => ev.id === event.id);
+                if (existingIndex >= 0) {
+                    events[existingIndex] = event;
+                } else {
+                    events.push(event);
+                }
+                
+                // Save to localStorage and refresh calendar
+                localStorage.setItem('calendarEvents', JSON.stringify(events));
+                eventModal.style.display = 'none';
+                renderCalendar();
+            });
+            
+            deleteBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this event?')) {
+                    events = events.filter(event => event.id !== eventIdEl.value);
+                    localStorage.setItem('calendarEvents', JSON.stringify(events));
+                    eventModal.style.display = 'none';
+                    renderCalendar();
+                }
+            });
+            
+            // Initial render
+            renderCalendar();
+        });
+    </script>
+</body>
+</html>

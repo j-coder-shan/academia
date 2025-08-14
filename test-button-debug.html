@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Debug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #2563eb;
+        }
+        .debug-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Button Debug Test</h1>
+    
+    <button class="test-button" id="toggleCreateForm">
+        <i class="fas fa-plus"></i>
+        <span>Add Presentation</span>
+    </button>
+    
+    <div class="debug-info">
+        <h3>Debug Information</h3>
+        <div id="debugOutput"></div>
+    </div>
+    
+    <script>
+        function log(message) {
+            const output = document.getElementById('debugOutput');
+            output.innerHTML += '<p>' + message + '</p>';
+            console.log(message);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            log('DOM loaded');
+            
+            const button = document.getElementById('toggleCreateForm');
+            log('Button found: ' + (button ? 'Yes' : 'No'));
+            
+            if (button) {
+                log('Button text: ' + button.textContent);
+                
+                button.addEventListener('click', () => {
+                    log('Button clicked!');
+                    alert('Button works!');
+                });
+                
+                log('Event listener added');
+            } else {
+                log('ERROR: Button not found!');
+            }
+        });
+    </script>
+</body>
+</html>
